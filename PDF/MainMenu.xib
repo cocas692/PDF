@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13196" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13196"/>
-        <plugIn identifier="com.apple.pdfkit.ibplugin" version="13196"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12121"/>
+        <plugIn identifier="com.apple.pdfkit.ibplugin" version="12121"/>
+        <capability name="box content view" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -681,34 +682,85 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="131" y="165" width="596" height="419"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" id="uAB-qk-Upk">
                 <rect key="frame" x="0.0" y="0.0" width="596" height="419"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <pdfView autoresizesSubviews="NO" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pq3-xv-3tc">
-                        <rect key="frame" x="105" y="0.0" width="480" height="419"/>
+                        <rect key="frame" x="116" y="62" width="480" height="357"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </pdfView>
+                    <box fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TkH-51-2Jf">
+                        <rect key="frame" x="-3" y="-4" width="602" height="80"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <view key="contentView" id="iiG-ew-Trg">
+                            <rect key="frame" x="2" y="2" width="598" height="63"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ci5-j0-e3O">
+                                    <rect key="frame" x="259" y="10" width="80" height="19"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="roundRect" title="Open PDF" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Jfa-te-g2D">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="cellTitle"/>
+                                    </buttonCell>
+                                </button>
+                                <comboBox verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ao9-4O-2yE">
+                                    <rect key="frame" x="250" y="33" width="99" height="26"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="Rn3-RL-UcZ">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        <objectValues>
+                                            <string>Item 1</string>
+                                            <string>Item 2</string>
+                                            <string>Item 3</string>
+                                        </objectValues>
+                                    </comboBoxCell>
+                                </comboBox>
+                                <button identifier="Next" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q3K-F3-fsv">
+                                    <rect key="frame" x="348" y="29" width="81" height="32"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="push" title="Next" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="cdh-SS-2Te">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                </button>
+                                <button identifier="Previous" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xm3-Jd-se0">
+                                    <rect key="frame" x="167" y="29" width="81" height="32"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="push" title="Previous" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="CJx-hC-JCt">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                </button>
+                            </subviews>
+                        </view>
+                    </box>
                 </subviews>
             </view>
             <toolbar key="toolbar" implicitIdentifier="F0230FD9-7AD0-4109-8C6D-0D73F3ECC6F5" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="3Wa-eh-FOn">
                 <allowedToolbarItems>
-                    <toolbarItem implicitItemIdentifier="176E0E9D-9F5A-4761-9BBB-5020439AF26D" label="openPDF" paletteLabel="openPDF" tag="-1" id="Rz6-TD-bie">
-                        <connections>
-                            <action selector="openPDF:" target="By2-83-JeL" id="ofc-e8-CxK"/>
-                        </connections>
-                    </toolbarItem>
                     <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="pJY-05-cQe"/>
                     <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="ikL-Kj-y3V"/>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
-                    <toolbarItem reference="Rz6-TD-bie"/>
                     <toolbarItem reference="ikL-Kj-y3V"/>
                 </defaultToolbarItems>
             </toolbar>
-            <point key="canvasLocation" x="79" y="135.5"/>
+            <point key="canvasLocation" x="155" y="144"/>
         </window>
-        <customObject id="By2-83-JeL" customClass="AppDelegate" customModule="PDF" customModuleProvider="target"/>
+        <customObject id="By2-83-JeL" customClass="AppDelegate" customModule="PDF" customModuleProvider="target">
+            <connections>
+                <outlet property="holdsPDF" destination="ao9-4O-2yE" id="fNJ-CY-G5x"/>
+                <outlet property="nextPDF" destination="q3K-F3-fsv" id="fcx-HB-E3S"/>
+                <outlet property="openPDF" destination="Ci5-j0-e3O" id="JOL-ZW-GOI"/>
+                <outlet property="previousPDF" destination="xm3-Jd-se0" id="WKc-U4-uX5"/>
+                <outlet property="viewPDF" destination="Pq3-xv-3tc" id="i8z-XF-zoo"/>
+                <outlet property="window" destination="9NX-nr-jfC" id="U18-1b-AKX"/>
+            </connections>
+        </customObject>
     </objects>
 </document>
