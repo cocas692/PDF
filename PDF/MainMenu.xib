@@ -722,6 +722,9 @@
                                             <string>Item 3</string>
                                         </objectValues>
                                     </comboBoxCell>
+                                    <connections>
+                                        <action selector="holdsPDF:" target="By2-83-JeL" id="XDE-vY-cZD"/>
+                                    </connections>
                                 </comboBox>
                                 <button identifier="Next" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q3K-F3-fsv">
                                     <rect key="frame" x="519" y="12" width="38" height="32"/>

@@ -78,21 +78,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             holdsPDF.stringValue = docs[0].lastPathComponent
             holdsPDF.isHidden = false
             
-            setPDF(docs[0])
+            viewPDF.document = PDFDocument(url: docs[0])
             
         }
 
     }
     
-    func setPDF(_ url: URL) {
-        viewPDF.document = PDFDocument(url: url)
-    }
     
     @IBAction func nextPDF(_ sender: Any) {
         if nextPDF.isHidden == false {
             if indexPDF != docs.count - 1 {
                 indexPDF += 1
-                setPDF(docs[indexPDF])
+                viewPDF.document = PDFDocument(url: docs[indexPDF])
                 holdsPDF.stringValue = docs[indexPDF].lastPathComponent
             }
         }
@@ -102,10 +99,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if previousPDF.isHidden == false {
             if indexPDF > 0 {
                 indexPDF -= 1
-                setPDF(docs[indexPDF])
+                viewPDF.document = PDFDocument(url: docs[indexPDF])
                 holdsPDF.stringValue = docs[indexPDF].lastPathComponent
             }
 
+        }
+    }
+    
+    @IBAction func holdsPDF(_ sender: AnyObject) {
+        if loaded {
+            indexPDF = sender.indexOfSelectedItem
+            viewPDF.document = PDFDocument(url: docs[indexPDF])
+            holdsPDF.stringValue = docs[indexPDF].lastPathComponent
         }
     }
     
