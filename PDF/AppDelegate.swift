@@ -14,14 +14,24 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     var docs = [URL]()
     var loaded = false
-    var index = 0;
-
+    var indexPDF = 0;
+    
+    var indexPage = 0
+    
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var viewPDF: PDFView!
     @IBOutlet weak var holdsPDF: NSComboBox!
     @IBOutlet weak var nextPDF: NSButton!
     @IBOutlet weak var previousPDF: NSButton!
     @IBOutlet weak var openPDF: NSButton!
+    @IBOutlet weak var minusZoom: NSButton!
+    @IBOutlet weak var nextPage: NSButton!
+    @IBOutlet weak var toPage: NSTextField!
+    @IBOutlet weak var typeNotes: NSTextField!
+    @IBOutlet weak var addNotes: NSButton!
+    @IBOutlet weak var zoomIn: NSButton!
+    @IBOutlet weak var zoomOut: NSButton!
+    
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         NotificationCenter.default.addObserver(self, selector: #selector(getter: openPDF), name: NSNotification.Name.PDFViewDocumentChanged, object: nil)
@@ -80,24 +90,58 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBAction func nextPDF(_ sender: Any) {
         if nextPDF.isHidden == false {
-            if index != docs.count - 1 {
-                index += 1
-                setPDF(docs[index])
-                holdsPDF.stringValue = docs[index].lastPathComponent
+            if indexPDF != docs.count - 1 {
+                indexPDF += 1
+                setPDF(docs[indexPDF])
+                holdsPDF.stringValue = docs[indexPDF].lastPathComponent
             }
         }
     }
     
     @IBAction func prevPDF(_ sender: Any) {
         if previousPDF.isHidden == false {
-            if index > 0 {
-                index -= 1
-                setPDF(docs[index])
-                holdsPDF.stringValue = docs[index].lastPathComponent
+            if indexPDF > 0 {
+                indexPDF -= 1
+                setPDF(docs[indexPDF])
+                holdsPDF.stringValue = docs[indexPDF].lastPathComponent
             }
+
         }
     }
     
+    @IBAction func zoomIn(_ sender: Any) {
+        if viewPDF.canZoomIn() {
+            viewPDF.zoomIn(0.5)
+        }
+    }
+    
+    @IBAction func zoomOut(_ sender: Any) {
+        if viewPDF.canZoomOut() {
+            viewPDF.zoomOut(0.5)
+        }
+    }
+    
+    @IBAction func prevPage(_ sender: Any) {
+        if viewPDF.canGoToPreviousPage() {
+            indexPage -= 1
+            viewPDF.goToPreviousPage(window)
+        }
+    }
+    
+    @IBAction func nextPage(_ sender: Any) {
+        if viewPDF.canGoToNextPage() {
+            indexPage += 1
+            viewPDF.goToNextPage(window)
+        }
+    }
+    
+    @IBAction func toPage(_ sender: Any) {
+        let numPages = (viewPDF.document?.pageCount)!
+        let input = Int(toPage.stringValue)
+        if input! < numPages && input! >= 0 {
+            viewPDF.go(to: (viewPDF.document?.page(at: input!))!)
+        }
+    }
 }
 
 
