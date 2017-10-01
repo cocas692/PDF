@@ -43,6 +43,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Insert code here to tear down your application
     }
     @IBAction func openPDF(_ sender: Any) {
+        //openPDF.layer!.backgroundColor = NSColor.white.cgColor
+        
+        
+        
         let file = NSOpenPanel()
         file.title = "Choose a PDF file"
         file.allowedFileTypes = ["pdf"]
@@ -87,7 +91,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBAction func nextPDF(_ sender: Any) {
         if nextPDF.isHidden == false {
-            if indexPDF != docs.count - 1 {
+            if indexPDF < docs.count - 1 {
                 indexPDF += 1
                 viewPDF.document = PDFDocument(url: docs[indexPDF])
                 holdsPDF.stringValue = docs[indexPDF].lastPathComponent
@@ -108,7 +112,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBAction func holdsPDF(_ sender: AnyObject) {
         if loaded {
-            indexPDF = sender.indexOfSelectedItem
+            indexPDF = docs.index(of: (viewPDF.document?.documentURL)!)!                                               //-1 error crashes page jump
             viewPDF.document = PDFDocument(url: docs[indexPDF])
             holdsPDF.stringValue = docs[indexPDF].lastPathComponent
         }
@@ -141,11 +145,43 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @IBAction func toPage(_ sender: Any) {
+        let onlyIntFormatter = OnlyIntegerValueFormatter()
+        toPage.formatter = onlyIntFormatter
         let numPages = (viewPDF.document?.pageCount)!
-        let input = Int(toPage.stringValue)
-        if input! < numPages && input! >= 0 {
-            viewPDF.go(to: (viewPDF.document?.page(at: input!))!)
+        if toPage.stringValue != "" {
+            let input = Int(toPage.stringValue)
+            if input! < numPages && input! >= 0 {
+                viewPDF.go(to: (viewPDF.document?.page(at: input!))!)
+            } else {
+                //dialog box saying "page number doesnt exist"
+                let popUp = NSAlert()
+                popUp.messageText = "Invalid page number"
+                popUp.addButton(withTitle: "OK")
+                popUp.runModal()
+            }
         }
+    }
+}
+
+class OnlyIntegerValueFormatter: NumberFormatter {
+    
+    override func isPartialStringValid(_ partialString: String, newEditingString newString: AutoreleasingUnsafeMutablePointer<NSString?>?, errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>?) -> Bool {
+        
+        // Ability to reset your field (otherwise you can't delete the content)
+        // You can check if the field is empty later
+        if partialString.isEmpty {
+            return true
+        }
+        
+        // Optional: limit input length
+        /*
+         if partialString.characters.count>3 {
+         return false
+         }
+         */
+        
+        // Actual check
+        return Int(partialString) != nil
     }
 }
 
