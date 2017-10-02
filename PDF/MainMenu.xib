@@ -682,7 +682,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="131" y="165" width="825" height="599"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
             <view key="contentView" id="uAB-qk-Upk">
                 <rect key="frame" x="0.0" y="0.0" width="825" height="599"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -718,19 +718,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <view key="contentView" id="iiG-ew-Trg">
                             <rect key="frame" x="2" y="2" width="827" height="602"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ci5-j0-e3O">
-                                    <rect key="frame" x="381" y="51" width="80" height="19"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <buttonCell key="cell" type="roundRect" title="Open PDF" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Jfa-te-g2D">
-                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" metaFont="cellTitle"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <action selector="openPDF:" target="By2-83-JeL" id="30l-jA-ff1"/>
-                                    </connections>
-                                </button>
                                 <comboBox verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ao9-4O-2yE">
                                     <rect key="frame" x="326" y="16" width="193" height="26"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -871,12 +860,23 @@
                                     <rect key="frame" x="125" y="79" width="695" height="496"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 </pdfView>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ci5-j0-e3O">
+                                    <rect key="frame" x="375" y="41" width="93" height="32"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <buttonCell key="cell" type="push" title="Open PDF" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Jfa-te-g2D">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="openPDF:" target="By2-83-JeL" id="30l-jA-ff1"/>
+                                    </connections>
+                                </button>
                             </subviews>
                         </view>
                     </box>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="885" y="173"/>
+            <point key="canvasLocation" x="884.5" y="172.5"/>
         </window>
         <customObject id="By2-83-JeL" customClass="AppDelegate" customModule="PDF" customModuleProvider="target">
             <connections>
