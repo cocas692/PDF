@@ -27,14 +27,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var minusZoom: NSButton!
     @IBOutlet weak var nextPage: NSButton!
     @IBOutlet weak var toPage: NSTextField!
+    
     @IBOutlet weak var typeNotes: NSTextField!
+    var notes: [String] = []
     @IBOutlet weak var addNotes: NSButton!
+    
     @IBOutlet weak var zoomIn: NSButton!
     @IBOutlet weak var zoomOut: NSButton!
     @IBOutlet weak var textSearch: NSSearchField!
+    var firstRun = true
+    
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         NotificationCenter.default.addObserver(self, selector: #selector(getter: openPDF), name: NSNotification.Name.PDFViewDocumentChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(typeNotes(notification:)), name: NSNotification.Name.PDFViewPageChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(typeNotes(notification:)), name: NSNotification.Name.NSControlTextDidChange, object: typeNotes)
     }
     
     
@@ -65,6 +72,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             self.docs = file.urls
             loaded = true
+            
+            toPage.stringValue = ""
             
             // Navigation between different PDFs
             if docs.count > 1 {
@@ -130,6 +139,57 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             viewPDF.zoomOut(0.5)
         }
     }
+    
+    
+    @IBAction func typeNotes(notification:NSNotification) {
+        var currPage:Int = 0
+        
+        if loaded && firstRun {
+            
+            for _ in 0...(viewPDF.document?.pageCount)! {
+                notes.append("")
+            }
+            firstRun = false
+        }
+        
+        if notification.name as Notification.Name == NSNotification.Name.PDFViewPageChanged {
+
+            if loaded {
+                for i in 0...(viewPDF.document?.pageCount)! {
+                    if viewPDF.currentPage == viewPDF.document?.page(at: i) {
+                        currPage = i
+                        print("currPage" + String(i))
+                        break
+                    }
+                }
+                typeNotes.stringValue = notes[currPage]
+            }
+        }
+        
+        if notification.name as Notification.Name == NSNotification.Name.NSControlTextDidChange {
+            if loaded {
+                for i in 0...(viewPDF.document?.pageCount)! {
+                    if viewPDF.currentPage == viewPDF.document?.page(at: i) {
+                        currPage = i
+                        print("currPage" + String(i))
+                        break
+                    }
+                }
+                notes[currPage] = typeNotes.stringValue
+            }
+        }
+    }
+    
+    
+    
+    @IBAction func addNotes(_ sender: Any) {
+        if typeNotes.stringValue != "" {
+           // let newNote:NSte
+        }
+    }
+    
+    
+    
     
     @IBAction func FitToScreen(_ sender: Any) {
         viewPDF.scaleFactor = CGFloat(1.0)
