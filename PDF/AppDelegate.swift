@@ -31,7 +31,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var addNotes: NSButton!
     @IBOutlet weak var zoomIn: NSButton!
     @IBOutlet weak var zoomOut: NSButton!
-    
+    @IBOutlet weak var textSearch: NSSearchField!
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         NotificationCenter.default.addObserver(self, selector: #selector(getter: openPDF), name: NSNotification.Name.PDFViewDocumentChanged, object: nil)
@@ -84,6 +84,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             viewPDF.document = PDFDocument(url: docs[0])
             
+            
         }
 
     }
@@ -130,6 +131,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    @IBAction func FitToScreen(_ sender: Any) {
+        viewPDF.scaleFactor = CGFloat(1.0)
+    }
+    
     @IBAction func prevPage(_ sender: Any) {
         if viewPDF.canGoToPreviousPage() {
             indexPage -= 1
@@ -158,6 +163,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 popUp.messageText = "Invalid page number"
                 popUp.addButton(withTitle: "OK")
                 popUp.runModal()
+            }
+        }
+    }
+    
+    @IBAction func textSearch(_ sender: Any) {
+        if loaded == true {
+            if textSearch.sendsSearchStringImmediately == true {
+                let find = textSearch.stringValue
+                if find != "" {
+                }
             }
         }
     }
