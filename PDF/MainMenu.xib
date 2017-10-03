@@ -814,6 +814,18 @@
                             <action selector="pageNum:" target="By2-83-JeL" id="U3F-lY-NYa"/>
                         </connections>
                     </textField>
+                    <searchField wantsLayer="YES" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uav-y1-mFV">
+                        <rect key="frame" x="311" y="604" width="220" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="1SC-wV-pzN">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </searchFieldCell>
+                        <connections>
+                            <action selector="textSearch:" target="By2-83-JeL" id="rA4-mp-uoA"/>
+                        </connections>
+                    </searchField>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pVP-dy-zle">
                         <rect key="frame" x="633" y="598" width="108" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -848,25 +860,31 @@
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5ze-Xy-dnZ">
-                        <rect key="frame" x="-4" y="598" width="82" height="32"/>
+                        <rect key="frame" x="-4" y="597" width="82" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Add" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="z3e-ZL-2JB">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                     </button>
-                    <searchField wantsLayer="YES" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uav-y1-mFV">
-                        <rect key="frame" x="311" y="604" width="220" height="22"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="1SC-wV-pzN">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </searchFieldCell>
+                    <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zkh-HB-com">
+                        <rect key="frame" x="78" y="602" width="129" height="26"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="cXV-pO-k7q" id="CXD-1n-Vwd">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="menu"/>
+                            <menu key="menu" id="YtT-aF-qZq">
+                                <items>
+                                    <menuItem title="Item 1" state="on" image="NSBookmarksTemplate" id="cXV-pO-k7q"/>
+                                    <menuItem title="Item 2" id="Lhx-Q5-o8F"/>
+                                    <menuItem title="Item 3" id="6zo-Vj-sYl"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
                         <connections>
-                            <action selector="textSearch:" target="By2-83-JeL" id="rA4-mp-uoA"/>
+                            <action selector="holdsBookmarks:" target="By2-83-JeL" id="b7m-3P-iIN"/>
                         </connections>
-                    </searchField>
+                    </popUpButton>
                 </subviews>
             </view>
             <toolbar key="toolbar" implicitIdentifier="9F81C034-85A2-4249-8A5F-0A85B309B3AD" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="33a-iP-bpa">
@@ -881,7 +899,11 @@
                             <action selector="helpButton:" target="By2-83-JeL" id="WHO-8V-HLD"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="A1DC07D0-3A20-4D68-BE57-143E2953ED11" label="Bookmarks" paletteLabel="Toolbar Item" tag="-1" image="NSBookmarksTemplate" id="bhb-AH-c4v"/>
+                    <toolbarItem implicitItemIdentifier="A1DC07D0-3A20-4D68-BE57-143E2953ED11" label="Bookmark" paletteLabel="Toolbar Item" tag="-1" image="NSBookmarksTemplate" id="bhb-AH-c4v">
+                        <connections>
+                            <action selector="bookmarkPage:" target="By2-83-JeL" id="vtg-l9-obb"/>
+                        </connections>
+                    </toolbarItem>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
                     <toolbarItem reference="gFk-nX-GgI"/>
@@ -900,6 +922,7 @@
                 <outlet property="helpTitle" destination="tVG-4t-myo" id="7c8-lU-0UN"/>
                 <outlet property="helpTop" destination="2eE-vC-TC9" id="TOd-WA-LWk"/>
                 <outlet property="helpWindow" destination="AXw-Q5-uOk" id="PFk-1p-bg8"/>
+                <outlet property="holdsBookmarks" destination="zkh-HB-com" id="Enl-VK-RUT"/>
                 <outlet property="holdsPDF" destination="ao9-4O-2yE" id="fNJ-CY-G5x"/>
                 <outlet property="nextPDF" destination="q3K-F3-fsv" id="fcx-HB-E3S"/>
                 <outlet property="nextPage" destination="nme-TO-cKC" id="yyr-0q-78z"/>

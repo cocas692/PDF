@@ -21,6 +21,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var firstRun = true
     
     
+    var vals = [AnyObject]()
+    var snum = 0;
+    
+    
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var viewPDF: PDFView!
     @IBOutlet weak var holdsPDF: NSComboBox!
@@ -40,9 +44,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var helpText: NSTextField!
     @IBOutlet weak var helpTop: NSTextField!
     @IBOutlet weak var pageNum: NSTextField!
+    @IBOutlet weak var holdsBookmarks: NSPopUpButton!
     
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        holdsBookmarks.isHidden = true
         helpWindow.setIsVisible(false)
         helpTop.stringValue = "PDF Viewer"
         helpTitle.stringValue = "Help Menu"
@@ -259,16 +265,31 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @IBAction func textSearch(_ sender: Any) {
-        print("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH\n\n\n\n\n\n")
         if loaded == true {
-                let find = textSearch.stringValue
-                if find != "" {
-                    print("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH\n\n\n\n\(find)\n\n")
-                    viewPDF.document?.beginFindString(find, withOptions: 1)
+            textSearch.sendsSearchStringImmediately = true
+            let find = textSearch.stringValue
+            if find != "" {
+                vals = (viewPDF.document?.findString(find, withOptions: 1))!
+                print("vals is \(vals)")
+                if !vals.isEmpty {
                 }
             }
         }
     }
+    
+
+
+    @IBAction func bookmarkPage(_ sender: Any) {
+        holdsBookmarks.isHidden = false
+        
+        
+    }
+
+    
+    @IBAction func holdsBookmarks(_ sender: Any) {
+    }
+
+}
 
 
 class OnlyIntegerValueFormatter: NumberFormatter {
