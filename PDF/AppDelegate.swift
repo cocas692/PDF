@@ -14,8 +14,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     var docs = [URL]()
     var loaded = false
-    var indexPDF = 0;
-    
+    var indexPDF = 0
     var indexPage = 0
     
     @IBOutlet weak var window: NSWindow!
@@ -30,6 +29,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBOutlet weak var typeNotes: NSTextField!
     var notes: [String] = []
+    var pdfDict = [String:[String]]()
     @IBOutlet weak var addNotes: NSButton!
     
     @IBOutlet weak var pageNum: NSTextField!
@@ -68,10 +68,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if (file.runModal() == NSModalResponseOK) {
             if holdsPDF.numberOfItems > 0 {
                 holdsPDF.removeAllItems()
-                docs = [URL]()
+                
             }
             
-            self.docs = file.urls
+            if !self.docs.contains(file.urls[0]) {
+                docs += [URL]()
+                self.docs += file.urls
+            }
+            
+            
             loaded = true
             
             toPage.stringValue = ""
@@ -89,10 +94,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             for url in docs {
                 holdsPDF.addItem(withObjectValue: url.lastPathComponent)
             }
-            holdsPDF.stringValue = docs[0].lastPathComponent
+            holdsPDF.stringValue = docs[(docs.count-1)].lastPathComponent
+            if pdfDict[docs[0].lastPathComponent] != nil {
+                notes = pdfDict[docs[0].lastPathComponent]!
+            }
             holdsPDF.isHidden = false
             
-            viewPDF.document = PDFDocument(url: docs[0])
+            viewPDF.document = PDFDocument(url: docs[(docs.count-1)])
             
             
         }
@@ -123,7 +131,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBAction func holdsPDF(_ sender: AnyObject) {
         if loaded {
-            indexPDF = docs.index(of: (viewPDF.document?.documentURL)!)!                                               //-1 error crashes page jump
+            //indexPDF = docs.index(of: (viewPDF.document?.documentURL)!)!        //-1 error crashes page jump
+            indexPDF = holdsPDF.indexOfSelectedItem
             viewPDF.document = PDFDocument(url: docs[indexPDF])
             holdsPDF.stringValue = docs[indexPDF].lastPathComponent
         }
@@ -178,6 +187,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     }
                 }
                 notes[currPage] = typeNotes.stringValue
+                pdfDict[docs[0].lastPathComponent] = notes
             }
         }
     }

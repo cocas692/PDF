@@ -728,11 +728,6 @@
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        <objectValues>
-                                            <string>Item 1</string>
-                                            <string>Item 2</string>
-                                            <string>Item 3</string>
-                                        </objectValues>
                                     </comboBoxCell>
                                     <connections>
                                         <action selector="holdsPDF:" target="By2-83-JeL" id="XDE-vY-cZD"/>
