@@ -32,6 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var notes: [String] = []
     @IBOutlet weak var addNotes: NSButton!
     
+    @IBOutlet weak var pageNum: NSTextField!
     @IBOutlet weak var zoomIn: NSButton!
     @IBOutlet weak var zoomOut: NSButton!
     @IBOutlet weak var textSearch: NSSearchField!
@@ -159,6 +160,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     if viewPDF.currentPage == viewPDF.document?.page(at: i) {
                         currPage = i
                         print("currPage" + String(i))
+                        pageNum.stringValue = String(currPage)
                         break
                     }
                 }

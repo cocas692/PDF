@@ -691,7 +691,7 @@
                     <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9RJ-Sf-GP3">
                         <rect key="frame" x="20" y="217" width="96" height="286"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="xf2-Gl-qSS">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" allowsEditingTextAttributes="YES" id="xf2-Gl-qSS">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -783,7 +783,7 @@
                                     </connections>
                                 </button>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rwz-8O-5YU">
-                                    <rect key="frame" x="649" y="19" width="76" height="17"/>
+                                    <rect key="frame" x="595" y="21" width="76" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Go to Page: " placeholderString="#" id="6PT-6d-KhT">
                                         <font key="font" metaFont="system"/>
@@ -792,25 +792,13 @@
                                     </textFieldCell>
                                 </textField>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9wO-68-u3w">
-                                    <rect key="frame" x="650" y="50" width="42" height="17"/>
+                                    <rect key="frame" x="595" y="50" width="94" height="17"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Page: " id="VBZ-VI-EmE">
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Page Number: " id="VBZ-VI-EmE">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
-                                </textField>
-                                <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mFu-6s-fsB">
-                                    <rect key="frame" x="731" y="17" width="22" height="22"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="#" drawsBackground="YES" id="sMr-yI-PNZ">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                    <connections>
-                                        <action selector="toPage:" target="By2-83-JeL" id="Zq2-r9-SIk"/>
-                                    </connections>
                                 </textField>
                                 <button identifier="zoomIn" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aFK-Ft-vM1">
                                     <rect key="frame" x="776" y="571" width="38" height="32"/>
@@ -872,6 +860,27 @@
                                         <action selector="openPDF:" target="By2-83-JeL" id="30l-jA-ff1"/>
                                     </connections>
                                 </button>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lyV-eo-Z3a">
+                                    <rect key="frame" x="686" y="50" width="37" height="17"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="0" id="24F-xV-Af8">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mFu-6s-fsB">
+                                    <rect key="frame" x="727" y="18" width="22" height="22"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="#" drawsBackground="YES" id="sMr-yI-PNZ">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                    <connections>
+                                        <action selector="toPage:" target="By2-83-JeL" id="Zq2-r9-SIk"/>
+                                    </connections>
+                                </textField>
                             </subviews>
                         </view>
                     </box>
@@ -886,6 +895,7 @@
                 <outlet property="nextPDF" destination="q3K-F3-fsv" id="fcx-HB-E3S"/>
                 <outlet property="nextPage" destination="nme-TO-cKC" id="yyr-0q-78z"/>
                 <outlet property="openPDF" destination="Ci5-j0-e3O" id="oMc-0P-DRf"/>
+                <outlet property="pageNum" destination="lyV-eo-Z3a" id="Pl8-b9-qht"/>
                 <outlet property="prevPage" destination="MYH-2M-y7x" id="T0T-EY-WQH"/>
                 <outlet property="previousPDF" destination="xm3-Jd-se0" id="WKc-U4-uX5"/>
                 <outlet property="textSearch" destination="Uav-y1-mFV" id="PUH-Rd-BJs"/>
