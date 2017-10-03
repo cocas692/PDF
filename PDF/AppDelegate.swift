@@ -14,8 +14,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     var docs = [URL]()
     var loaded = false
-    var indexPDF = 0
+    var indexPDF = 0;
+    var notes: [String] = []
+    var pdfDict = [String:[String]]()
     var indexPage = 0
+    var firstRun = true
+    
     
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var viewPDF: PDFView!
@@ -26,23 +30,31 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var minusZoom: NSButton!
     @IBOutlet weak var nextPage: NSButton!
     @IBOutlet weak var toPage: NSTextField!
-    
     @IBOutlet weak var typeNotes: NSTextField!
-    var notes: [String] = []
-    var pdfDict = [String:[String]]()
     @IBOutlet weak var addNotes: NSButton!
-    
-    @IBOutlet weak var pageNum: NSTextField!
     @IBOutlet weak var zoomIn: NSButton!
     @IBOutlet weak var zoomOut: NSButton!
     @IBOutlet weak var textSearch: NSSearchField!
-    var firstRun = true
+    @IBOutlet weak var helpWindow: NSPanel!
+    @IBOutlet weak var helpTitle: NSTextField!
+    @IBOutlet weak var helpText: NSTextField!
+    @IBOutlet weak var helpTop: NSTextField!
+    @IBOutlet weak var pageNum: NSTextField!
     
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        helpWindow.setIsVisible(false)
+        helpTop.stringValue = "PDF Viewer"
+        helpTitle.stringValue = "Help Menu"
+        helpTop.font = NSFont(name: (helpTop.font?.fontName)!, size: CGFloat(20.0))
+        helpTop.font = NSFont.boldSystemFont(ofSize: 20.0)
+        helpTitle.font = NSFont(name: (helpTitle.font?.fontName)!, size: CGFloat(20.0))
+        helpTitle.font = NSFont.boldSystemFont(ofSize: 16.0)
+        helpText.stringValue = "This is a PDF viewer designed by Ashton \n Cochrane and Tyler Baker.\n\n This is purely for the use of the assignment\n two of the COSC346 paper."
         NotificationCenter.default.addObserver(self, selector: #selector(getter: openPDF), name: NSNotification.Name.PDFViewDocumentChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(typeNotes(notification:)), name: NSNotification.Name.PDFViewPageChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(typeNotes(notification:)), name: NSNotification.Name.NSControlTextDidChange, object: typeNotes)
+        //NotificationCenter.default.addObserver(self, selector: #selector(search(notification:)), name: NSNotification.Name., object: textSearch)
     }
     
     
@@ -56,7 +68,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         
         let file = NSOpenPanel()
-        file.title = "Choose a PDF file"
+        file.title = "Select PDF file"
         file.allowedFileTypes = ["pdf"]
         file.showsHiddenFiles = false
         file.showsResizeIndicator = true
@@ -101,6 +113,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             holdsPDF.isHidden = false
             
             viewPDF.document = PDFDocument(url: docs[(docs.count-1)])
+            pageNum.stringValue = String(1)
             
             
         }
@@ -151,7 +164,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     
-    @IBAction func typeNotes(notification:NSNotification) {
+    func typeNotes(notification:NSNotification) {
         var currPage:Int = 0
         
         if loaded && firstRun {
@@ -169,11 +182,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     if viewPDF.currentPage == viewPDF.document?.page(at: i) {
                         currPage = i
                         print("currPage" + String(i))
-                        pageNum.stringValue = String(currPage)
                         break
                     }
                 }
                 typeNotes.stringValue = notes[currPage]
+                pageNum.stringValue = String(currPage+1)
             }
         }
         
@@ -227,8 +240,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let numPages = (viewPDF.document?.pageCount)!
         if toPage.stringValue != "" {
             let input = Int(toPage.stringValue)
-            if input! < numPages && input! >= 0 {
-                viewPDF.go(to: (viewPDF.document?.page(at: input!))!)
+            
+            if input! <= numPages && input! > 0 {
+                viewPDF.go(to: (viewPDF.document?.page(at: input!-1))!)
             } else {
                 //dialog box saying "page number doesnt exist"
                 let popUp = NSAlert()
@@ -239,16 +253,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    
+    @IBAction func helpButton(_ sender: Any) {
+        helpWindow.setIsVisible(true)
+    }
+    
     @IBAction func textSearch(_ sender: Any) {
+        print("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH\n\n\n\n\n\n")
         if loaded == true {
-            if textSearch.sendsSearchStringImmediately == true {
                 let find = textSearch.stringValue
                 if find != "" {
+                    print("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH\n\n\n\n\(find)\n\n")
+                    viewPDF.document?.beginFindString(find, withOptions: 1)
                 }
             }
         }
     }
-}
+
 
 class OnlyIntegerValueFormatter: NumberFormatter {
     
