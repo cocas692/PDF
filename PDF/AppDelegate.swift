@@ -26,6 +26,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     
     @IBOutlet weak var window: NSWindow!
+    
     @IBOutlet weak var viewPDF: PDFView!
     @IBOutlet weak var holdsPDF: NSComboBox!
     @IBOutlet weak var nextPDF: NSButton!
@@ -44,12 +45,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var helpText: NSTextField!
     @IBOutlet weak var helpTop: NSTextField!
     @IBOutlet weak var pageNum: NSTextField!
-    @IBOutlet weak var holdsBookmarks: NSPopUpButton!
+    
+    @IBOutlet weak var addBookmark: NSToolbarItem!
+    @IBOutlet weak var addBookmarkPanel: NSPanel!
+    @IBOutlet weak var holdBookmark: NSPopUpButton!
     
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        holdsBookmarks.isHidden = true
+        holdBookmark.isHidden = true
+        
         helpWindow.setIsVisible(false)
+        addBookmarkPanel.setIsVisible(false)
         helpTop.stringValue = "PDF Viewer"
         helpTitle.stringValue = "Help Menu"
         helpTop.font = NSFont(name: (helpTop.font?.fontName)!, size: CGFloat(20.0))
@@ -103,6 +109,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if docs.count > 1 {
                 nextPDF.isHidden = false
                 previousPDF.isHidden = false
+                addBookmarkPanel.setIsVisible(true)
             } else {
                 nextPDF.isHidden = true
                 previousPDF.isHidden = true
@@ -125,7 +132,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
     }
-    
     
     @IBAction func nextPDF(_ sender: Any) {
         if nextPDF.isHidden == false {
@@ -278,15 +284,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
 
+    
 
-    @IBAction func bookmarkPage(_ sender: Any) {
-        holdsBookmarks.isHidden = false
+    func createBookmark(_ sender: Any) {
+        holdBookmark.isHidden = false
+        addBookmarkPanel.setIsVisible(true)
+        
+        
         
         
     }
 
     
-    @IBAction func holdsBookmarks(_ sender: Any) {
+    @IBAction func holdBookmark(_ sender: Any) {
+        
+        
     }
 
 }

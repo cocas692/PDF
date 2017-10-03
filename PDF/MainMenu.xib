@@ -681,7 +681,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="131" y="165" width="825" height="634"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
             <value key="minSize" type="size" width="825" height="599"/>
             <view key="contentView" id="uAB-qk-Upk">
                 <rect key="frame" x="0.0" y="0.0" width="825" height="634"/>
@@ -859,14 +859,6 @@
                             <action selector="zoomIn:" target="By2-83-JeL" id="OaW-uV-jvF"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5ze-Xy-dnZ">
-                        <rect key="frame" x="-4" y="597" width="82" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Add" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="z3e-ZL-2JB">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                    </button>
                     <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zkh-HB-com">
                         <rect key="frame" x="78" y="602" width="129" height="26"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -885,6 +877,14 @@
                             <action selector="holdsBookmarks:" target="By2-83-JeL" id="b7m-3P-iIN"/>
                         </connections>
                     </popUpButton>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5ze-Xy-dnZ">
+                        <rect key="frame" x="-4" y="598" width="82" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Add" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="z3e-ZL-2JB">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                    </button>
                 </subviews>
             </view>
             <toolbar key="toolbar" implicitIdentifier="9F81C034-85A2-4249-8A5F-0A85B309B3AD" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="33a-iP-bpa">
@@ -899,9 +899,9 @@
                             <action selector="helpButton:" target="By2-83-JeL" id="WHO-8V-HLD"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="A1DC07D0-3A20-4D68-BE57-143E2953ED11" label="Bookmark" paletteLabel="Toolbar Item" tag="-1" image="NSBookmarksTemplate" id="bhb-AH-c4v">
+                    <toolbarItem implicitItemIdentifier="A1DC07D0-3A20-4D68-BE57-143E2953ED11" label="Bookmark" paletteLabel="AddBookmark" tag="-1" image="NSBookmarksTemplate" autovalidates="NO" id="bhb-AH-c4v" userLabel="addBookmark">
                         <connections>
-                            <action selector="bookmarkPage:" target="By2-83-JeL" id="vtg-l9-obb"/>
+                            <action selector="deminiaturize:" target="BOq-6I-iYA" id="aWZ-ey-CjV"/>
                         </connections>
                     </toolbarItem>
                 </allowedToolbarItems>
@@ -917,11 +917,14 @@
         </window>
         <customObject id="By2-83-JeL" customClass="AppDelegate" customModule="PDF" customModuleProvider="target">
             <connections>
+                <outlet property="addBookmark" destination="bhb-AH-c4v" id="9F5-Fw-qE7"/>
+                <outlet property="addBookmarkPanel" destination="BOq-6I-iYA" id="Q0R-W9-hvW"/>
                 <outlet property="addNotes" destination="5ze-Xy-dnZ" id="kYa-QK-GYI"/>
                 <outlet property="helpText" destination="XFA-qr-Xdb" id="fmG-BH-CL1"/>
                 <outlet property="helpTitle" destination="tVG-4t-myo" id="7c8-lU-0UN"/>
                 <outlet property="helpTop" destination="2eE-vC-TC9" id="TOd-WA-LWk"/>
                 <outlet property="helpWindow" destination="AXw-Q5-uOk" id="PFk-1p-bg8"/>
+                <outlet property="holdBookmark" destination="zkh-HB-com" id="psd-Gs-aO6"/>
                 <outlet property="holdsBookmarks" destination="zkh-HB-com" id="Enl-VK-RUT"/>
                 <outlet property="holdsPDF" destination="ao9-4O-2yE" id="fNJ-CY-G5x"/>
                 <outlet property="nextPDF" destination="q3K-F3-fsv" id="fcx-HB-E3S"/>
@@ -944,7 +947,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="116" width="360" height="448"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
             <view key="contentView" id="S96-dG-ec1">
                 <rect key="frame" x="0.0" y="0.0" width="360" height="448"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -984,6 +987,59 @@
                 </subviews>
             </view>
             <point key="canvasLocation" x="950" y="607"/>
+        </window>
+        <window title="New Bookmark" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hidesOnDeactivate="YES" oneShot="NO" showsToolbarButton="NO" frameAutosaveName="" animationBehavior="default" id="BOq-6I-iYA" customClass="NSPanel">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" utility="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="196" y="112" width="386" height="177"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <view key="contentView" id="m8o-Oa-bA4">
+                <rect key="frame" x="0.0" y="0.0" width="386" height="177"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kbf-l9-Ui9">
+                        <rect key="frame" x="20" y="128" width="346" height="29"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" identifier="Bookmark Name" placeholderString="Bookmark Name" drawsBackground="YES" id="TKz-Xf-UAx">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IiL-tH-Q85">
+                        <rect key="frame" x="20" y="59" width="346" height="59"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Description (Optional)" drawsBackground="YES" id="nY1-Ia-oEf">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YeH-R4-RKI">
+                        <rect key="frame" x="217" y="13" width="81" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Qjq-5z-yYO">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                    </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="17b-Ww-E0N">
+                        <rect key="frame" x="90" y="13" width="81" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="OK" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="zQ3-Nq-ONA">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                    </button>
+                </subviews>
+            </view>
+            <point key="canvasLocation" x="1068" y="-810.5"/>
         </window>
     </objects>
     <resources>
