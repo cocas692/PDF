@@ -20,6 +20,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var indexPage = 0
     var firstRun = true
     var valsCount = 0
+    var valsIndex = 0
+    var first = true
+    var lectureNotesDict = [Int:String]()
     
     
     var vals = [AnyObject]()
@@ -27,7 +30,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     
     @IBOutlet weak var window: NSWindow!
-    
     @IBOutlet weak var viewPDF: PDFView!
     @IBOutlet weak var holdsPDF: NSComboBox!
     @IBOutlet weak var nextPDF: NSButton!
@@ -37,7 +39,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var nextPage: NSButton!
     @IBOutlet weak var toPage: NSTextField!
     @IBOutlet weak var typeNotes: NSTextField!
-    @IBOutlet weak var addNotes: NSButton!
     @IBOutlet weak var zoomIn: NSButton!
     @IBOutlet weak var zoomOut: NSButton!
     @IBOutlet weak var textSearch: NSSearchField!
@@ -50,12 +51,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var addBookmark: NSToolbarItem!
     @IBOutlet weak var addBookmarkPanel: NSPanel!
     @IBOutlet weak var holdBookmark: NSPopUpButton!
-    
-    
+    @IBOutlet weak var searchStepper: NSStepper!
+    @IBOutlet weak var lectureNotes: NSTextField!
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         holdBookmark.isHidden = true
-        
+        lectureNotes.isHidden = true
         helpTop.stringValue = "PDF Viewer"
         helpTitle.stringValue = "Help Menu"
         helpTop.font = NSFont(name: (helpTop.font?.fontName)!, size: CGFloat(20.0))
@@ -66,6 +67,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(getter: openPDF), name: NSNotification.Name.PDFViewDocumentChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(typeNotes(notification:)), name: NSNotification.Name.PDFViewPageChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(typeNotes(notification:)), name: NSNotification.Name.NSControlTextDidChange, object: typeNotes)
+        NotificationCenter.default.addObserver(self, selector: #selector(typeNotesLecture(notification:)), name: NSNotification.Name.PDFViewDocumentChanged, object: nil)
         //NotificationCenter.default.addObserver(self, selector: #selector(search(notification:)), name: NSNotification.Name., object: textSearch)
     }
     
@@ -158,8 +160,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if loaded {
             //indexPDF = docs.index(of: (viewPDF.document?.documentURL)!)!        //-1 error crashes page jump
             indexPDF = holdsPDF.indexOfSelectedItem
+            if indexPDF == -1 {
+                indexPDF=0
+            }
             viewPDF.document = PDFDocument(url: docs[indexPDF])
             holdsPDF.stringValue = docs[indexPDF].lastPathComponent
+            
         }
     }
     
@@ -217,14 +223,36 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    
-    
-    @IBAction func addNotes(_ sender: Any) {
-        if typeNotes.stringValue != "" {
-           // let newNote:NSte
+    func typeNotesLecture(notification:NSNotification) {
+        var prevIndex = indexPDF
+        if loaded {
+            if first {
+                lectureNotesDict[indexPDF] = lectureNotes.stringValue
+                first = false
+            }
+            
+            
+            if notification.name as Notification.Name == NSNotification.Name.PDFViewDocumentChanged {
+                if (lectureNotesDict[indexPDF] == nil) {
+                    lectureNotes.stringValue = ""
+                } else {
+                    lectureNotes.stringValue = lectureNotesDict[indexPDF]!
+                }
+            }
+        
         }
     }
     
+    @IBAction func lectureNotes(_ sender: Any) {
+        lectureNotes.isHidden = false
+        typeNotes.isHidden = true
+    }
+    
+    
+    @IBAction func pageNotes(_ sender: Any) {
+        typeNotes.isHidden = false
+        lectureNotes.isHidden = true
+    }
     
     
     
@@ -266,26 +294,51 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     
-    @IBAction func helpButton(_ sender: Any) {
+    @IBAction func helpButton(_ sender: NSSearchField) {
         helpWindow.setIsVisible(true)
     }
     
     @IBAction func textSearch(_ sender: Any) {
+        let yellow = NSColor(red: 1, green: 1, blue: 0, alpha: 1)
+        let blue = NSColor(red: 0, green: 0, blue: 1, alpha: 1)
         if loaded == true {
             textSearch.sendsSearchStringImmediately = true
             let find = textSearch.stringValue
             if find != "" {
-                vals = (viewPDF.document?.findString(find, withOptions: 2))!
-                print("vals is \(vals)")
+                vals = (viewPDF.document?.findString(find, withOptions: 1))!
                 if !vals.isEmpty {
+                    searchStepper.isHidden = false;
                     valsCount = vals.count - 1
-                    for i in 0...vals.count {
-                        viewPDF.setCurrentSelection(vals[i] as! PDFSelection, animate: true)
-                        viewPDF.scrollSelectionToVisible(vals[i])
+                    vals[0].setColor(yellow)
+                    viewPDF.setCurrentSelection(vals[0] as! PDFSelection, animate: true)
+                    viewPDF.scrollSelectionToVisible(vals[0])
+                    if vals.count > 1 {
+                        for i in 0...vals.count {
+                            viewPDF.setCurrentSelection(vals[i] as! PDFSelection, animate: true)
+                            vals[i].setColor(yellow)
+                        }
                     }
                 }
             }
         }
+    }
+    @IBAction func searchStepper(_ sender: NSStepper) {
+        var currVal = searchStepper.integerValue
+        let maxSteps = vals.count-1
+        print("top curr val \(currVal)")
+        print("vals index \(valsIndex)")
+        if currVal < valsIndex && currVal >= maxSteps {
+            viewPDF.setCurrentSelection(vals[currVal] as! PDFSelection, animate: true)
+            viewPDF.scrollSelectionToVisible(vals[currVal])
+            print("bottom curVal\(currVal)")
+        } else if currVal > valsIndex && currVal > 0 {
+            currVal -= 1
+            viewPDF.setCurrentSelection(vals[currVal] as! PDFSelection, animate: true)
+            viewPDF.scrollSelectionToVisible(vals[currVal])
+            print(valsIndex)
+        }
+        
+        
     }
     
     @IBAction func addBookmark(_ sender: Any) {
