@@ -19,6 +19,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var pdfDict = [String:[String]]()
     var indexPage = 0
     var firstRun = true
+    var valsCount = 0
     
     
     var vals = [AnyObject]()
@@ -274,9 +275,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             textSearch.sendsSearchStringImmediately = true
             let find = textSearch.stringValue
             if find != "" {
-                vals = (viewPDF.document?.findString(find, withOptions: 1))!
+                vals = (viewPDF.document?.findString(find, withOptions: 2))!
                 print("vals is \(vals)")
                 if !vals.isEmpty {
+                    valsCount = vals.count - 1
+                    for i in 0...vals.count {
+                        viewPDF.setCurrentSelection(vals[i] as! PDFSelection, animate: true)
+                        viewPDF.scrollSelectionToVisible(vals[i])
+                    }
                 }
             }
         }
