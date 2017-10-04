@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12121"/>
-        <plugIn identifier="com.apple.pdfkit.ibplugin" version="12121"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12120"/>
+        <plugIn identifier="com.apple.pdfkit.ibplugin" version="12120"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -681,7 +681,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="131" y="165" width="825" height="634"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <value key="minSize" type="size" width="825" height="599"/>
             <view key="contentView" id="uAB-qk-Upk">
                 <rect key="frame" x="0.0" y="0.0" width="825" height="634"/>
@@ -796,7 +796,7 @@
                     <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9RJ-Sf-GP3">
                         <rect key="frame" x="2" y="84" width="165" height="489"/>
                         <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" drawsBackground="YES" allowsEditingTextAttributes="YES" id="xf2-Gl-qSS">
+                        <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" allowsEditingTextAttributes="YES" id="xf2-Gl-qSS">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -874,7 +874,7 @@
                             </menu>
                         </popUpButtonCell>
                         <connections>
-                            <action selector="holdsBookmarks:" target="By2-83-JeL" id="b7m-3P-iIN"/>
+                            <action selector="holdBookmark:" target="By2-83-JeL" id="NT5-Wm-0q1"/>
                         </connections>
                     </popUpButton>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5ze-Xy-dnZ">
@@ -894,14 +894,14 @@
                     <toolbarItem implicitItemIdentifier="NSToolbarPrintItem" id="w2A-fP-qNu"/>
                     <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="KQe-WM-kXR"/>
                     <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="qMj-rR-AhI"/>
-                    <toolbarItem implicitItemIdentifier="CB4CB095-506E-44A5-BBE6-3725A33BCD21" label="Help" paletteLabel="Toolbar Item" tag="-1" image="NSInfo" id="H7w-9n-b2F">
+                    <toolbarItem implicitItemIdentifier="CB4CB095-506E-44A5-BBE6-3725A33BCD21" label="Help" paletteLabel="Help" tag="-1" image="NSInfo" id="H7w-9n-b2F">
                         <connections>
                             <action selector="helpButton:" target="By2-83-JeL" id="WHO-8V-HLD"/>
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="A1DC07D0-3A20-4D68-BE57-143E2953ED11" label="Bookmark" paletteLabel="AddBookmark" tag="-1" image="NSBookmarksTemplate" autovalidates="NO" id="bhb-AH-c4v" userLabel="addBookmark">
                         <connections>
-                            <action selector="deminiaturize:" target="BOq-6I-iYA" id="aWZ-ey-CjV"/>
+                            <action selector="addBookmark:" target="By2-83-JeL" id="NTw-Kf-SuN"/>
                         </connections>
                     </toolbarItem>
                 </allowedToolbarItems>
@@ -917,15 +917,18 @@
         </window>
         <customObject id="By2-83-JeL" customClass="AppDelegate" customModule="PDF" customModuleProvider="target">
             <connections>
-                <outlet property="addBookmark" destination="bhb-AH-c4v" id="9F5-Fw-qE7"/>
-                <outlet property="addBookmarkPanel" destination="BOq-6I-iYA" id="Q0R-W9-hvW"/>
+                <outlet property="addBookmark" destination="bhb-AH-c4v" id="UkK-n1-w5e"/>
+                <outlet property="addBookmarkCancel" destination="YeH-R4-RKI" id="BX0-Fd-8kX"/>
+                <outlet property="addBookmarkDesc" destination="IiL-tH-Q85" id="yGQ-Rx-Lbc"/>
+                <outlet property="addBookmarkName" destination="kbf-l9-Ui9" id="ZGt-F8-j6f"/>
+                <outlet property="addBookmarkOK" destination="17b-Ww-E0N" id="apF-Lt-n9C"/>
+                <outlet property="addBookmarkPanel" destination="BOq-6I-iYA" id="mIi-x3-c7m"/>
                 <outlet property="addNotes" destination="5ze-Xy-dnZ" id="kYa-QK-GYI"/>
                 <outlet property="helpText" destination="XFA-qr-Xdb" id="fmG-BH-CL1"/>
                 <outlet property="helpTitle" destination="tVG-4t-myo" id="7c8-lU-0UN"/>
                 <outlet property="helpTop" destination="2eE-vC-TC9" id="TOd-WA-LWk"/>
                 <outlet property="helpWindow" destination="AXw-Q5-uOk" id="PFk-1p-bg8"/>
-                <outlet property="holdBookmark" destination="zkh-HB-com" id="psd-Gs-aO6"/>
-                <outlet property="holdsBookmarks" destination="zkh-HB-com" id="Enl-VK-RUT"/>
+                <outlet property="holdBookmark" destination="zkh-HB-com" id="1cx-J8-uhq"/>
                 <outlet property="holdsPDF" destination="ao9-4O-2yE" id="fNJ-CY-G5x"/>
                 <outlet property="nextPDF" destination="q3K-F3-fsv" id="fcx-HB-E3S"/>
                 <outlet property="nextPage" destination="nme-TO-cKC" id="yyr-0q-78z"/>
@@ -943,11 +946,13 @@
             </connections>
         </customObject>
         <userDefaultsController representsSharedInstance="YES" id="hm7-Bb-gyK"/>
-        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hidesOnDeactivate="YES" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" frameAutosaveName="" animationBehavior="default" id="AXw-Q5-uOk" customClass="NSPanel">
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hidesOnDeactivate="YES" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="AXw-Q5-uOk" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="116" width="360" height="448"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <value key="minSize" type="size" width="360" height="448"/>
+            <value key="maxSize" type="size" width="360" height="448"/>
             <view key="contentView" id="S96-dG-ec1">
                 <rect key="frame" x="0.0" y="0.0" width="360" height="448"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -988,11 +993,11 @@
             </view>
             <point key="canvasLocation" x="950" y="607"/>
         </window>
-        <window title="New Bookmark" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hidesOnDeactivate="YES" oneShot="NO" showsToolbarButton="NO" frameAutosaveName="" animationBehavior="default" id="BOq-6I-iYA" customClass="NSPanel">
+        <window title="New Bookmark" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hidesOnDeactivate="YES" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="BOq-6I-iYA" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="112" width="386" height="177"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" id="m8o-Oa-bA4">
                 <rect key="frame" x="0.0" y="0.0" width="386" height="177"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -1025,6 +1030,9 @@
 Gw
 </string>
                         </buttonCell>
+                        <connections>
+                            <action selector="addBookmarkCancel:" target="By2-83-JeL" id="LHM-Gi-ead"/>
+                        </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="17b-Ww-E0N">
                         <rect key="frame" x="90" y="13" width="81" height="32"/>
@@ -1036,6 +1044,9 @@ Gw
 DQ
 </string>
                         </buttonCell>
+                        <connections>
+                            <action selector="addBookmarkOK:" target="By2-83-JeL" id="ofb-Nm-dpg"/>
+                        </connections>
                     </button>
                 </subviews>
             </view>

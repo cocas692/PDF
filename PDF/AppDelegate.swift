@@ -17,8 +17,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var indexPDF = 0;
     var notes: [String] = []
     var pdfDict = [String:[String]]()
+    var bookmarks = [String]()
+    var bookmarkDict = [String:[String]]()
     var indexPage = 0
     var firstRun = true
+    var valsCount = 0
     
     
     var vals = [AnyObject]()
@@ -48,14 +51,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBOutlet weak var addBookmark: NSToolbarItem!
     @IBOutlet weak var addBookmarkPanel: NSPanel!
+    @IBOutlet weak var addBookmarkName: NSTextField!
+    @IBOutlet weak var addBookmarkOK: NSButton!
+    @IBOutlet weak var addBookmarkCancel: NSButton!
+    @IBOutlet weak var addBookmarkDesc: NSTextField!
     @IBOutlet weak var holdBookmark: NSPopUpButton!
     
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         holdBookmark.isHidden = true
+        addBookmarkOK.isEnabled = false
         
-        helpWindow.setIsVisible(false)
-        addBookmarkPanel.setIsVisible(false)
         helpTop.stringValue = "PDF Viewer"
         helpTitle.stringValue = "Help Menu"
         helpTop.font = NSFont(name: (helpTop.font?.fontName)!, size: CGFloat(20.0))
@@ -66,7 +72,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(getter: openPDF), name: NSNotification.Name.PDFViewDocumentChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(typeNotes(notification:)), name: NSNotification.Name.PDFViewPageChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(typeNotes(notification:)), name: NSNotification.Name.NSControlTextDidChange, object: typeNotes)
-        //NotificationCenter.default.addObserver(self, selector: #selector(search(notification:)), name: NSNotification.Name., object: textSearch)
+        NotificationCenter.default.addObserver(self, selector: #selector(enableBookmark(_sender:)), name: NSNotification.Name.NSControlTextDidChange, object: addBookmarkName)
+        
     }
     
     
@@ -109,7 +116,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if docs.count > 1 {
                 nextPDF.isHidden = false
                 previousPDF.isHidden = false
-                addBookmarkPanel.setIsVisible(true)
+                //addBookmarkPanel.setIsVisible(true)
             } else {
                 nextPDF.isHidden = true
                 previousPDF.isHidden = true
@@ -275,31 +282,66 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             textSearch.sendsSearchStringImmediately = true
             let find = textSearch.stringValue
             if find != "" {
-                vals = (viewPDF.document?.findString(find, withOptions: 1))!
+                vals = (viewPDF.document?.findString(find, withOptions: 2))!
                 print("vals is \(vals)")
                 if !vals.isEmpty {
+                    valsCount = vals.count - 1
+                    for i in 0...vals.count {
+                        viewPDF.setCurrentSelection(vals[i] as? PDFSelection, animate: true)
+                        viewPDF.scrollSelectionToVisible(vals[i])
+                    }
                 }
             }
         }
     }
     
-
+    @IBAction func addBookmark(_ sender: Any) {
+        if loaded {
+            addBookmarkPanel.setIsVisible(true)
+        }
+    }
     
-
-    func createBookmark(_ sender: Any) {
+    func enableBookmark(_sender: Any) {
+        if addBookmarkName.stringValue != "" {
+            addBookmarkOK.isEnabled = true
+        } else {
+            addBookmarkOK.isEnabled = false
+        }
+    }
+    
+    @IBAction func addBookmarkOK(_ sender: Any) {
+        
+        bookmarkDict[addBookmarkName.stringValue] = [pageNum.stringValue,addBookmarkDesc.stringValue]
         holdBookmark.isHidden = false
-        addBookmarkPanel.setIsVisible(true)
-        
-        
+        holdBookmark.removeAllItems()
+        holdBookmark.addItems(withTitles: Array(bookmarkDict.keys))
+        bookmarks.append(addBookmarkName.stringValue)
+        addBookmarkName.stringValue = ""
+        addBookmarkDesc.stringValue = ""
+        addBookmarkOK.isEnabled = false
+        addBookmarkPanel.close()
         
         
     }
 
-    
-    @IBAction func holdBookmark(_ sender: Any) {
-        
+    @IBAction func addBookmarkCancel(_ sender: Any) {
+        addBookmarkName.stringValue = ""
+        addBookmarkDesc.stringValue = ""
+        addBookmarkOK.isEnabled = false
+        addBookmarkPanel.close()
         
     }
+
+    @IBAction func holdBookmark(_ sender: Any) {
+        let key = holdBookmark.titleOfSelectedItem!
+        print(key)
+        let bookmark = bookmarkDict[key]
+        let page = bookmark![0]
+        
+        viewPDF.go(to: (viewPDF.document?.page(at: (Int(page)!)-1))!)
+        
+    }
+    
 
 }
 
