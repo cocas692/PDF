@@ -10,45 +10,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PDF/AppDelegate.swift"
-            timestampString = "528715888.866221"
+            timestampString = "528873625.570045"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
-            landmarkName = "prevPDF(_:)"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "applicationDidFinishLaunching(_:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "PDF.AppDelegate.typeNotes (notification : __ObjC.NSNotification) -&gt; ()"
-                  moduleName = "PDF"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///home/cshome/t/tbaker/346/PDF/PDF/AppDelegate.swift"
-                  timestampString = "528696471.880231"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "154"
-                  endingLineNumber = "154"
-                  offsetFromSymbolStart = "250">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "PDF.AppDelegate.typeNotes (notification : __ObjC.NSNotification) -&gt; ()"
-                  moduleName = "PDF"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///home/cshome/t/tbaker/346/PDF/PDF/AppDelegate.swift"
-                  timestampString = "528696471.882289"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "154"
-                  endingLineNumber = "154"
-                  offsetFromSymbolStart = "6908">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -58,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PDF/AppDelegate.swift"
-            timestampString = "528715888.866221"
+            timestampString = "528873625.570045"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "173"
-            endingLineNumber = "173"
+            startingLineNumber = "201"
+            endingLineNumber = "201"
             landmarkName = "zoomIn(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -74,77 +42,45 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PDF/AppDelegate.swift"
-            timestampString = "528715888.866221"
+            timestampString = "528873625.570045"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "136"
-            endingLineNumber = "136"
-            landmarkName = "openPDF(_:)"
+            startingLineNumber = "241"
+            endingLineNumber = "241"
+            landmarkName = "typeNotes(notification:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PDF/AppDelegate.swift"
-            timestampString = "528714745.59008"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
-            landmarkName = "applicationDidFinishLaunching(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PDF/AppDelegate.swift"
-            timestampString = "528714745.59008"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
-            landmarkName = "AppDelegate"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PDF/AppDelegate.swift"
-            timestampString = "528714745.59008"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "72"
-            endingLineNumber = "72"
-            landmarkName = "applicationDidFinishLaunching(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PDF/AppDelegate.swift"
-            timestampString = "528714745.59008"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
-            landmarkName = "applicationDidFinishLaunching(_:)"
-            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PDF.AppDelegate.typeNotes (notification : __ObjC.NSNotification) -&gt; ()"
+                  moduleName = "PDF"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///home/cshome/t/tbaker/346/PDF/PDF/AppDelegate.swift"
+                  timestampString = "528870795.789124"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "238"
+                  endingLineNumber = "238"
+                  offsetFromSymbolStart = "4102">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PDF.AppDelegate.typeNotes (notification : __ObjC.NSNotification) -&gt; ()"
+                  moduleName = "PDF"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///home/cshome/t/tbaker/346/PDF/PDF/AppDelegate.swift"
+                  timestampString = "528870795.791555"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "238"
+                  endingLineNumber = "238"
+                  offsetFromSymbolStart = "6479">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

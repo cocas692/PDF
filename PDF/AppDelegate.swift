@@ -16,7 +16,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var loaded = false
     var indexPDF = 0;
     var notes: [String] = []
-    var pdfDict = [String:[String]]()
     var bookmarks = [String]()
     var bookmarkDict = [String:[String]]()
     var indexPage = 0
@@ -25,6 +24,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var valsIndex = 0
     var first = true
     var lectureNotesDict = [Int:String]()
+    var pageNotesDict = [Int:[String]]()
     var prevIndex = 0;
     
     var seconds = 0
@@ -80,8 +80,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         holdBookmark.isHidden = true
         addBookmarkOK.isEnabled = false
-        
+        typeNotes.isEditable = false
+        lectureNotes.isEditable = false
         lectureNotes.isHidden = true
+        typeNotes.isHidden = true
         
         pauseButton.isEnabled = false
         
@@ -159,9 +161,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 holdsPDF.addItem(withObjectValue: url.lastPathComponent)
             }
             holdsPDF.stringValue = docs[(docs.count-1)].lastPathComponent
-            if pdfDict[docs[0].lastPathComponent] != nil {
-                notes = pdfDict[docs[0].lastPathComponent]!
-            }
             holdsPDF.isHidden = false
             
             viewPDF.document = PDFDocument(url: docs[(docs.count-1)])
@@ -255,33 +254,48 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     }
                 }
                 notes[currPage] = typeNotes.stringValue
-                pdfDict[docs[0].lastPathComponent] = notes
             }
         }
     }
     
     func typeNotesLecture(notification:NSNotification) {
         if loaded {
+            
             if notification.name as Notification.Name == NSNotification.Name.NSControlTextDidChange {
                 if indexPDF == prevIndex {
                     lectureNotesDict[indexPDF] = lectureNotes.stringValue
                 }
             }
-                if indexPDF != prevIndex {
-                    if lectureNotesDict[indexPDF] == nil {
-                        lectureNotes.stringValue = ""
-                        prevIndex = indexPDF
-                    } else {
-                        lectureNotes.stringValue = lectureNotesDict[indexPDF]!
-                        prevIndex = indexPDF
+            if indexPDF != prevIndex {
+                pageNotesDict[prevIndex] = notes
+                
+                if pageNotesDict[indexPDF] != nil {
+                    notes = pageNotesDict[indexPDF]!
+                    typeNotes.stringValue = notes[0]
+                } else {
+                    notes.removeAll()
+                    for _ in 0...(viewPDF.document?.pageCount)! {
+                        notes.append("")
                     }
+                }
             }
-        
+            
+            if indexPDF != prevIndex {
+                if lectureNotesDict[indexPDF] == nil {
+                    lectureNotes.stringValue = ""
+                    prevIndex = indexPDF
+                } else {
+                    lectureNotes.stringValue = lectureNotesDict[indexPDF]!
+                    prevIndex = indexPDF
+                }
+            }
+
         }
     }
     
     @IBAction func lectureNotes(_ sender: Any) {
         lectureNotes.isHidden = false
+        lectureNotes.isEditable = true
         typeNotes.isHidden = true
         lectureButton.highlight(true)
         pageButton.highlight(false)
@@ -298,6 +312,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBAction func pageNotes(_ sender: Any) {
         typeNotes.isHidden = false
+        typeNotes.isEditable = true
         lectureNotes.isHidden = true
         pageButton.highlight(true)
         lectureButton.highlight(false)
@@ -310,6 +325,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             lectureButton.isEnabled = true
         }
     }
+    
+    
     
     
     
