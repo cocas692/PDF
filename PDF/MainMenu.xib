@@ -681,7 +681,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="131" y="165" width="825" height="634"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
             <value key="minSize" type="size" width="825" height="599"/>
             <view key="contentView" id="uAB-qk-Upk">
                 <rect key="frame" x="0.0" y="0.0" width="825" height="634"/>
@@ -970,6 +970,26 @@
                             <action selector="resetButton:" target="By2-83-JeL" id="81q-6o-PgJ"/>
                         </connections>
                     </button>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9OP-II-2k0">
+                        <rect key="frame" x="309" y="582" width="224" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" id="uHH-lX-q3F">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BgF-4o-M00">
+                        <rect key="frame" x="633" y="573" width="108" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Unattended" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="KcS-g7-aK5">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="openUnattended:" target="By2-83-JeL" id="vum-uc-6wP"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
             <toolbar key="toolbar" implicitIdentifier="9F81C034-85A2-4249-8A5F-0A85B309B3AD" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="33a-iP-bpa">
@@ -1009,6 +1029,8 @@
                 <outlet property="addBookmarkOK" destination="17b-Ww-E0N" id="apF-Lt-n9C"/>
                 <outlet property="addBookmarkPanel" destination="BOq-6I-iYA" id="mIi-x3-c7m"/>
                 <outlet property="clockLabel" destination="Q0g-VA-Yp7" id="Ydo-kV-vXT"/>
+                <outlet property="countdownLabel" destination="CBD-Dw-b63" id="Cy1-rb-hQ3"/>
+                <outlet property="getCountdown" destination="W4X-0Y-B5n" id="uff-Nu-NQR"/>
                 <outlet property="helpText" destination="XFA-qr-Xdb" id="fmG-BH-CL1"/>
                 <outlet property="helpTitle" destination="tVG-4t-myo" id="7c8-lU-0UN"/>
                 <outlet property="helpTop" destination="2eE-vC-TC9" id="TOd-WA-LWk"/>
@@ -1020,17 +1042,20 @@
                 <outlet property="nextPDF" destination="q3K-F3-fsv" id="fcx-HB-E3S"/>
                 <outlet property="nextPage" destination="nme-TO-cKC" id="yyr-0q-78z"/>
                 <outlet property="openPDF" destination="Ci5-j0-e3O" id="oMc-0P-DRf"/>
+                <outlet property="openUnattended" destination="BgF-4o-M00" id="EdZ-Yp-gLE"/>
                 <outlet property="pageButton" destination="Vju-eb-dfZ" id="NTq-PX-eDp"/>
                 <outlet property="pageNum" destination="rcx-Pp-tkb" id="OFV-8E-Iai"/>
                 <outlet property="pauseButton" destination="IIU-SP-ahh" id="yc5-Oh-gJt"/>
                 <outlet property="prevPage" destination="MYH-2M-y7x" id="T0T-EY-WQH"/>
                 <outlet property="previousPDF" destination="xm3-Jd-se0" id="WKc-U4-uX5"/>
+                <outlet property="searchOutput" destination="9OP-II-2k0" id="mON-6i-VCc"/>
                 <outlet property="searchStepper" destination="5q7-EO-Hgg" id="g85-xQ-o8N"/>
                 <outlet property="startButton" destination="Q3H-au-cch" id="d7f-jg-tbc"/>
                 <outlet property="textSearch" destination="Uav-y1-mFV" id="PUH-Rd-BJs"/>
                 <outlet property="timerLabel" destination="Mf7-W8-DCW" id="Hwd-my-099"/>
                 <outlet property="toPage" destination="mFu-6s-fsB" id="Nzs-rH-tbw"/>
                 <outlet property="typeNotes" destination="9RJ-Sf-GP3" id="hcV-Ut-IY0"/>
+                <outlet property="unattendedWindow" destination="TdB-gK-YU2" id="b8E-LW-UTH"/>
                 <outlet property="viewPDF" destination="Pq3-xv-3tc" id="i8z-XF-zoo"/>
                 <outlet property="window" destination="9NX-nr-jfC" id="U18-1b-AKX"/>
                 <outlet property="zoomIn" destination="aFK-Ft-vM1" id="u3M-NG-7u5"/>
@@ -1042,7 +1067,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="798" y="303" width="360" height="448"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
             <value key="minSize" type="size" width="360" height="448"/>
             <value key="maxSize" type="size" width="360" height="448"/>
             <view key="contentView" id="S96-dG-ec1">
@@ -1089,7 +1114,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="755" y="432" width="386" height="177"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
             <view key="contentView" id="m8o-Oa-bA4">
                 <rect key="frame" x="0.0" y="0.0" width="386" height="177"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -1143,6 +1168,71 @@ DQ
                 </subviews>
             </view>
             <point key="canvasLocation" x="1156" y="-583"/>
+        </window>
+        <window title="Unattended Mode" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hidesOnDeactivate="YES" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" frameAutosaveName="" animationBehavior="default" id="TdB-gK-YU2" customClass="NSPanel">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="1182" y="662" width="238" height="112"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+            <view key="contentView" id="H7G-x2-Fdj">
+                <rect key="frame" x="0.0" y="0.0" width="238" height="112"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hKE-EF-pEd">
+                        <rect key="frame" x="11" y="41" width="89" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Pause time: " id="xLR-Qd-shG">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W4X-0Y-B5n">
+                        <rect key="frame" x="105" y="38" width="113" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="22e-et-cdN">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oXa-xO-kiN">
+                        <rect key="frame" x="143" y="3" width="81" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="OK" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="52t-1S-b9E">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="okayButton:" target="By2-83-JeL" id="54u-Wi-EJv"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PgI-cc-zDX">
+                        <rect key="frame" x="7" y="3" width="81" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DL2-ey-rAR">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="cancelButton:" target="By2-83-JeL" id="XSO-pA-jG5"/>
+                        </connections>
+                    </button>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CBD-Dw-b63">
+                        <rect key="frame" x="34" y="70" width="171" height="30"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="center" placeholderString="00:00:00" drawsBackground="YES" id="qaY-Xk-lVo">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlHighlightColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                </subviews>
+            </view>
+            <point key="canvasLocation" x="1667" y="-258"/>
         </window>
     </objects>
     <resources>

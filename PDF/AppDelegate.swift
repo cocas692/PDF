@@ -27,10 +27,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var pageNotesDict = [Int:[String]]()
     var prevIndex = 0;
     
+    //timer
     var seconds = 0
     var timer = Timer()
     var isTimerRunning = false
     var resumeTapped = false
+    
+    //Counter
+    var unchanged = 60
+    var counterReachsEnd = 60
+    var secondsCounter = 60
+    var counter = Timer()
+    var isCounterRunning = false
     
     var date = Date()
     let dateFormatter = DateFormatter()
@@ -67,6 +75,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var addBookmarkDesc: NSTextField!
     @IBOutlet weak var holdBookmark: NSPopUpButton!
     @IBOutlet weak var searchStepper: NSStepper!
+    @IBOutlet weak var searchOutput: NSTextField!
     @IBOutlet weak var lectureNotes: NSTextField!
     
     @IBOutlet weak var pageButton: NSButton!
@@ -77,6 +86,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var pauseButton: NSButton!
     @IBOutlet weak var startButton: NSButton!
     
+    //UNATTENDED MODE CODE
+    @IBOutlet weak var countdownLabel: NSTextField!
+    @IBOutlet weak var unattendedWindow: NSPanel!
+    @IBOutlet weak var getCountdown: NSTextField!
+    @IBOutlet weak var openUnattended: NSButton!
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         holdBookmark.isHidden = true
         addBookmarkOK.isEnabled = false
@@ -85,11 +100,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         lectureNotes.isHidden = true
         typeNotes.isHidden = true
         
+        unattendedWindow.setIsVisible(false)
+        
         pauseButton.isEnabled = false
         
-
+        searchOutput.font = NSFont.boldSystemFont(ofSize: 8.0)
+        
         clockLabel.stringValue = DateFormatter.localizedString(from: date, dateStyle: .short, timeStyle: .short)
-
+        
+        countdownLabel.font = NSFont(name: (timerLabel.font?.fontName)!, size: CGFloat(18.0))
         timerLabel.font = NSFont(name: (timerLabel.font?.fontName)!, size: CGFloat(18.0))
         
         helpTop.stringValue = "PDF Viewer"
@@ -403,11 +422,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             let maxSteps = vals.count-1
             print("top curr val \(currVal)")
             print("vals index \(valsIndex)")
+            if (vals.count > 0) {
+                searchOutput.stringValue = "Selection \(currVal) out of \(maxSteps)"
+            }
             if currVal < valsIndex && currVal >= maxSteps {
                 viewPDF.setCurrentSelection(vals[currVal] as! PDFSelection, animate: true)
                 viewPDF.scrollSelectionToVisible(vals[currVal])
                 print("bottom curVal\(currVal)")
-            } else if currVal > valsIndex && currVal > 0 {
+            } else if currVal > valsIndex && currVal > 0 && currVal < vals.count{
                 currVal -= 1
                 viewPDF.setCurrentSelection(vals[currVal] as! PDFSelection, animate: true)
                 viewPDF.scrollSelectionToVisible(vals[currVal])
@@ -434,7 +456,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBAction func addBookmarkOK(_ sender: Any) {
         
-        bookmarkDict[addBookmarkName.stringValue] = [pageNum.stringValue,addBookmarkDesc.stringValue]
+        bookmarkDict[addBookmarkName.stringValue] = [pageNum.stringValue, String(indexPDF)]
         holdBookmark.isHidden = false
         holdBookmark.removeAllItems()
         holdBookmark.addItems(withTitles: Array(bookmarkDict.keys))
@@ -515,6 +537,56 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         pauseButton.isEnabled = true
         startButton.isEnabled = true
         pauseButton.title = "Pause"
+    }
+    
+    
+    
+    //UNATTENDED LECTURE PAUSING CODE
+    @IBAction func openUnattended(_ sender: NSButton) {
+        if loaded {
+            unattendedWindow.setIsVisible(true)
+        }
+    }
+    
+    @IBAction func okayButton(_ sender: NSButton) {
+        if isCounterRunning == false {
+            secondsCounter = Int(getCountdown.stringValue)!
+            counterReachsEnd = Int(getCountdown.stringValue)!
+            unchanged = Int(getCountdown.stringValue)!
+            runCounter()
+        }
+    }
+    
+    @IBAction func cancelButton(_ sender: NSButton) {
+        counter.invalidate()
+        secondsCounter = 0
+        countdownLabel.stringValue = timeString(time: TimeInterval(secondsCounter))
+        isCounterRunning = false
+        unattendedWindow.setIsVisible(false)
+    }
+    
+    func updateCountdown() {
+        if counterReachsEnd == 0 {
+            if viewPDF.canGoToNextPage() {
+                indexPage += 1
+                viewPDF.goToNextPage(window)
+                secondsCounter = unchanged
+                counterReachsEnd = unchanged
+            }
+        }
+        if secondsCounter <= 0 {
+            timer.invalidate()
+        } else {
+            secondsCounter -= 1
+            counterReachsEnd -= 1
+            countdownLabel.stringValue = timeString(time: TimeInterval(secondsCounter))
+        }
+    }
+    
+    func runCounter() {
+        counter = Timer.scheduledTimer(timeInterval: 1, target: self,   selector: (#selector(updateCountdown)), userInfo: nil, repeats: true)
+        
+        isCounterRunning = true
     }
     
 }
