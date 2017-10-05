@@ -25,6 +25,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var valsIndex = 0
     var first = true
     var lectureNotesDict = [Int:String]()
+    var prevIndex = 0;
     
     
     var vals = [AnyObject]()
@@ -60,6 +61,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var searchStepper: NSStepper!
     @IBOutlet weak var lectureNotes: NSTextField!
     
+    @IBOutlet weak var pageButton: NSButton!
+    @IBOutlet weak var lectureButton: NSButton!
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         holdBookmark.isHidden = true
         lectureNotes.isHidden = true
@@ -75,6 +79,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(typeNotes(notification:)), name: NSNotification.Name.PDFViewPageChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(typeNotes(notification:)), name: NSNotification.Name.NSControlTextDidChange, object: typeNotes)
         NotificationCenter.default.addObserver(self, selector: #selector(typeNotesLecture(notification:)), name: NSNotification.Name.PDFViewDocumentChanged, object: nil)
+                NotificationCenter.default.addObserver(self, selector: #selector(typeNotesLecture(notification:)), name: NSNotification.Name.NSControlTextDidChange, object: lectureNotes)
         NotificationCenter.default.addObserver(self, selector: #selector(enableBookmark(_sender:)), name: NSNotification.Name.NSControlTextDidChange, object: addBookmarkName)
         
     }
@@ -232,20 +237,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func typeNotesLecture(notification:NSNotification) {
-        var prevIndex = indexPDF
         if loaded {
-            if first {
-                lectureNotesDict[indexPDF] = lectureNotes.stringValue
-                first = false
-            }
-            
-            
-            if notification.name as Notification.Name == NSNotification.Name.PDFViewDocumentChanged {
-                if (lectureNotesDict[indexPDF] == nil) {
-                    lectureNotes.stringValue = ""
-                } else {
-                    lectureNotes.stringValue = lectureNotesDict[indexPDF]!
+            if notification.name as Notification.Name == NSNotification.Name.NSControlTextDidChange {
+                if indexPDF == prevIndex {
+                    lectureNotesDict[indexPDF] = lectureNotes.stringValue
+                    print("Same page: \(lectureNotesDict[indexPDF])\n\n")
                 }
+            }
+                if indexPDF != prevIndex {
+                    if lectureNotesDict[indexPDF] == nil {
+                        lectureNotes.stringValue = ""
+                        prevIndex = indexPDF
+                        print("here\n\n\n")
+                    } else {
+                        print("lecture notes here: \(lectureNotesDict[indexPDF])\n\n\n")
+                        lectureNotes.stringValue = lectureNotesDict[indexPDF]!
+                        prevIndex = indexPDF
+                    }
             }
         
         }
@@ -254,12 +262,32 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBAction func lectureNotes(_ sender: Any) {
         lectureNotes.isHidden = false
         typeNotes.isHidden = true
+        lectureButton.highlight(true)
+        pageButton.highlight(false)
+//        lectureButton.setButtonType(NSPushOnPushOffButton)
+//        if pageButton.state == 1 {
+//            pageButton.setNextState()
+//        }
+        if lectureButton.isHighlighted {
+            lectureButton.isEnabled = false
+            pageButton.isEnabled = true
+        }
     }
     
     
     @IBAction func pageNotes(_ sender: Any) {
         typeNotes.isHidden = false
         lectureNotes.isHidden = true
+        pageButton.highlight(true)
+        lectureButton.highlight(false)
+//        pageButton.setButtonType(NSPushOnPushOffButton)
+//        if lectureButton.state == 2 {
+//            lectureButton.setNextState()
+//        }
+        if pageButton.isHighlighted {
+            pageButton.isEnabled = false
+            lectureButton.isEnabled = true
+        }
     }
     
     

@@ -796,7 +796,7 @@
                     <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9RJ-Sf-GP3">
                         <rect key="frame" x="0.0" y="84" width="165" height="489"/>
                         <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
-                        <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" allowsEditingTextAttributes="YES" id="xf2-Gl-qSS">
+                        <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" drawsBackground="YES" allowsEditingTextAttributes="YES" id="xf2-Gl-qSS">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -960,10 +960,12 @@
                 <outlet property="helpWindow" destination="AXw-Q5-uOk" id="PFk-1p-bg8"/>
                 <outlet property="holdBookmark" destination="zkh-HB-com" id="1cx-J8-uhq"/>
                 <outlet property="holdsPDF" destination="ao9-4O-2yE" id="fNJ-CY-G5x"/>
+                <outlet property="lectureButton" destination="Dm9-SY-ofo" id="QRr-Yp-1r6"/>
                 <outlet property="lectureNotes" destination="f7k-UV-sgY" id="EQC-Ig-T2o"/>
                 <outlet property="nextPDF" destination="q3K-F3-fsv" id="fcx-HB-E3S"/>
                 <outlet property="nextPage" destination="nme-TO-cKC" id="yyr-0q-78z"/>
                 <outlet property="openPDF" destination="Ci5-j0-e3O" id="oMc-0P-DRf"/>
+                <outlet property="pageButton" destination="Vju-eb-dfZ" id="NTq-PX-eDp"/>
                 <outlet property="pageNum" destination="rcx-Pp-tkb" id="OFV-8E-Iai"/>
                 <outlet property="prevPage" destination="MYH-2M-y7x" id="T0T-EY-WQH"/>
                 <outlet property="previousPDF" destination="xm3-Jd-se0" id="WKc-U4-uX5"/>
@@ -981,15 +983,10 @@
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hidesOnDeactivate="YES" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="AXw-Q5-uOk" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-
             <rect key="contentRect" x="798" y="303" width="360" height="448"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
-
-            <rect key="contentRect" x="196" y="116" width="360" height="448"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <value key="minSize" type="size" width="360" height="448"/>
             <value key="maxSize" type="size" width="360" height="448"/>
-
             <view key="contentView" id="S96-dG-ec1">
                 <rect key="frame" x="0.0" y="0.0" width="360" height="448"/>
                 <autoresizingMask key="autoresizingMask"/>
