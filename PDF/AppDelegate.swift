@@ -32,6 +32,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var isTimerRunning = false
     var resumeTapped = false
     
+    var date = Date()
+    let dateFormatter = DateFormatter()
+
     
     var vals = [AnyObject]()
     var snum = 0;
@@ -69,6 +72,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var pageButton: NSButton!
     @IBOutlet weak var lectureButton: NSButton!
     
+    @IBOutlet weak var clockLabel: NSTextField!
     @IBOutlet weak var timerLabel: NSTextField!
     @IBOutlet weak var pauseButton: NSButton!
     @IBOutlet weak var startButton: NSButton!
@@ -80,7 +84,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         lectureNotes.isHidden = true
         
         pauseButton.isEnabled = false
-        timerLabel.font = NSFont(name: (timerLabel.font?.fontName)!, size: CGFloat(20.0))
+        
+
+        clockLabel.stringValue = DateFormatter.localizedString(from: date, dateStyle: .short, timeStyle: .short)
+
+        timerLabel.font = NSFont(name: (timerLabel.font?.fontName)!, size: CGFloat(18.0))
         
         helpTop.stringValue = "PDF Viewer"
         helpTitle.stringValue = "Help Menu"
@@ -373,19 +381,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @IBAction func searchStepper(_ sender: NSStepper) {
-        var currVal = searchStepper.integerValue
-        let maxSteps = vals.count-1
-        print("top curr val \(currVal)")
-        print("vals index \(valsIndex)")
-        if currVal < valsIndex && currVal >= maxSteps {
-            viewPDF.setCurrentSelection(vals[currVal] as! PDFSelection, animate: true)
-            viewPDF.scrollSelectionToVisible(vals[currVal])
-            print("bottom curVal\(currVal)")
-        } else if currVal > valsIndex && currVal > 0 {
-            currVal -= 1
-            viewPDF.setCurrentSelection(vals[currVal] as! PDFSelection, animate: true)
-            viewPDF.scrollSelectionToVisible(vals[currVal])
-            print(valsIndex)
+        if loaded {
+            var currVal = searchStepper.integerValue
+            let maxSteps = vals.count-1
+            print("top curr val \(currVal)")
+            print("vals index \(valsIndex)")
+            if currVal < valsIndex && currVal >= maxSteps {
+                viewPDF.setCurrentSelection(vals[currVal] as! PDFSelection, animate: true)
+                viewPDF.scrollSelectionToVisible(vals[currVal])
+                print("bottom curVal\(currVal)")
+            } else if currVal > valsIndex && currVal > 0 {
+                currVal -= 1
+                viewPDF.setCurrentSelection(vals[currVal] as! PDFSelection, animate: true)
+                viewPDF.scrollSelectionToVisible(vals[currVal])
+                print(valsIndex)
+            }
         }
         
         
@@ -487,6 +497,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         isTimerRunning = false
         pauseButton.isEnabled = true
         startButton.isEnabled = true
+        pauseButton.title = "Pause"
     }
     
 }
