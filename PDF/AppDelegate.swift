@@ -27,6 +27,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var lectureNotesDict = [Int:String]()
     var prevIndex = 0;
     
+    var seconds = 0
+    var timer = Timer()
+    var isTimerRunning = false
+    var resumeTapped = false
+    
     
     var vals = [AnyObject]()
     var snum = 0;
@@ -64,10 +69,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var pageButton: NSButton!
     @IBOutlet weak var lectureButton: NSButton!
     
+    @IBOutlet weak var timerLabel: NSTextField!
+    @IBOutlet weak var pauseButton: NSButton!
+    @IBOutlet weak var startButton: NSButton!
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         holdBookmark.isHidden = true
-        lectureNotes.isHidden = true
         addBookmarkOK.isEnabled = false
+        
+        lectureNotes.isHidden = true
+        
+        pauseButton.isEnabled = false
+        timerLabel.font = NSFont(name: (timerLabel.font?.fontName)!, size: CGFloat(20.0))
+        
         helpTop.stringValue = "PDF Viewer"
         helpTitle.stringValue = "Help Menu"
         helpTop.font = NSFont(name: (helpTop.font?.fontName)!, size: CGFloat(20.0))
@@ -81,6 +95,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(typeNotesLecture(notification:)), name: NSNotification.Name.PDFViewDocumentChanged, object: nil)
                 NotificationCenter.default.addObserver(self, selector: #selector(typeNotesLecture(notification:)), name: NSNotification.Name.NSControlTextDidChange, object: lectureNotes)
         NotificationCenter.default.addObserver(self, selector: #selector(enableBookmark(_sender:)), name: NSNotification.Name.NSControlTextDidChange, object: addBookmarkName)
+        
+
         
     }
     
@@ -241,16 +257,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if notification.name as Notification.Name == NSNotification.Name.NSControlTextDidChange {
                 if indexPDF == prevIndex {
                     lectureNotesDict[indexPDF] = lectureNotes.stringValue
-                    print("Same page: \(lectureNotesDict[indexPDF])\n\n")
                 }
             }
                 if indexPDF != prevIndex {
                     if lectureNotesDict[indexPDF] == nil {
                         lectureNotes.stringValue = ""
                         prevIndex = indexPDF
-                        print("here\n\n\n")
                     } else {
-                        print("lecture notes here: \(lectureNotesDict[indexPDF])\n\n\n")
                         lectureNotes.stringValue = lectureNotesDict[indexPDF]!
                         prevIndex = indexPDF
                     }
@@ -425,7 +438,57 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
     }
     
+    func runTimer() {
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self,   selector: (#selector(updateTimer)), userInfo: nil, repeats: true)
+        
+        isTimerRunning = true
+        pauseButton.isEnabled = true
+    }
+    
+    func updateTimer() {
+        if seconds < 0 {
+            timer.invalidate()
+        } else {
+            seconds += 1
+            timerLabel.stringValue = timeString(time: TimeInterval(seconds))
+        }
+    }
+    
+    func timeString(time: TimeInterval) -> String {
+        let hours = Int(time) / 3600
+        let minutes = Int(time) / 60 % 60
+        let seconds = Int(time) % 60
+        return String(format: "%02i:%02i:%02i",hours, minutes, seconds)
+    }
 
+    @IBAction func startButton(_ sender: NSButton) {
+        if isTimerRunning == false {
+            runTimer()
+            startButton.isEnabled = false
+        }
+    }
+    
+    @IBAction func pauseButton(_ sender: NSButton) {
+        if resumeTapped  == false {
+            timer.invalidate()
+            resumeTapped = true
+            pauseButton.title = "Resume"
+        } else {
+            runTimer()
+            resumeTapped = false
+            pauseButton.title = "Pause"
+        }
+    }
+    
+    @IBAction func resetButton(_ sender: NSButton) {
+        timer.invalidate()
+        seconds = 0
+        timerLabel.stringValue = timeString(time: TimeInterval(seconds))
+        isTimerRunning = false
+        pauseButton.isEnabled = true
+        startButton.isEnabled = true
+    }
+    
 }
 
 

@@ -910,10 +910,52 @@
                     <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f7k-UV-sgY">
                         <rect key="frame" x="0.0" y="84" width="165" height="489"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" drawsBackground="YES" id="V6C-NJ-9bT">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" drawsBackground="YES" allowsEditingTextAttributes="YES" id="V6C-NJ-9bT">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IIU-SP-ahh">
+                        <rect key="frame" x="84" y="48" width="77" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Pause" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="7Ha-m6-EGY">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="pauseButton:" target="By2-83-JeL" id="OD3-nW-5x3"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mAa-5b-yEH">
+                        <rect key="frame" x="45" y="-5" width="77" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Reset" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DLj-yd-uLK">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="resetButton:" target="By2-83-JeL" id="81q-6o-PgJ"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q3H-au-cch">
+                        <rect key="frame" x="14" y="48" width="77" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Start" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="FlP-Hq-zAi">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="startButton:" target="By2-83-JeL" id="wUg-CH-WYs"/>
+                        </connections>
+                    </button>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mf7-W8-DCW">
+                        <rect key="frame" x="18" y="22" width="139" height="29"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" placeholderString="00:00:00" id="h2G-x5-5W9">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
                 </subviews>
@@ -967,10 +1009,13 @@
                 <outlet property="openPDF" destination="Ci5-j0-e3O" id="oMc-0P-DRf"/>
                 <outlet property="pageButton" destination="Vju-eb-dfZ" id="NTq-PX-eDp"/>
                 <outlet property="pageNum" destination="rcx-Pp-tkb" id="OFV-8E-Iai"/>
+                <outlet property="pauseButton" destination="IIU-SP-ahh" id="yc5-Oh-gJt"/>
                 <outlet property="prevPage" destination="MYH-2M-y7x" id="T0T-EY-WQH"/>
                 <outlet property="previousPDF" destination="xm3-Jd-se0" id="WKc-U4-uX5"/>
                 <outlet property="searchStepper" destination="5q7-EO-Hgg" id="g85-xQ-o8N"/>
+                <outlet property="startButton" destination="Q3H-au-cch" id="d7f-jg-tbc"/>
                 <outlet property="textSearch" destination="Uav-y1-mFV" id="PUH-Rd-BJs"/>
+                <outlet property="timerLabel" destination="Mf7-W8-DCW" id="Hwd-my-099"/>
                 <outlet property="toPage" destination="mFu-6s-fsB" id="Nzs-rH-tbw"/>
                 <outlet property="typeNotes" destination="9RJ-Sf-GP3" id="hcV-Ut-IY0"/>
                 <outlet property="viewPDF" destination="Pq3-xv-3tc" id="i8z-XF-zoo"/>
