@@ -213,7 +213,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBAction func holdsPDF(_ sender: AnyObject) {
         if loaded {
-            //indexPDF = docs.index(of: (viewPDF.document?.documentURL)!)!        //-1 error crashes page jump
+            
+            
             indexPDF = holdsPDF.indexOfSelectedItem
             if indexPDF == -1 {
                 indexPDF=0
@@ -225,54 +226,60 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @IBAction func zoomIn(_ sender: Any) {
-        if viewPDF.canZoomIn() {
-            viewPDF.zoomIn(0.5)
+        if loaded {
+            if viewPDF.canZoomIn() {
+                viewPDF.zoomIn(0.5)
+            }
         }
     }
     
     @IBAction func zoomOut(_ sender: Any) {
-        if viewPDF.canZoomOut() {
-            viewPDF.zoomOut(0.5)
+        if loaded {
+            if viewPDF.canZoomOut() {
+                viewPDF.zoomOut(0.5)
+            }
         }
     }
     
     
     func typeNotes(notification:NSNotification) {
-        var currPage:Int = 0
-        
-        if loaded && firstRun {
+        if loaded {
+            var currPage:Int = 0
             
-            for _ in 0...(viewPDF.document?.pageCount)! {
-                notes.append("")
-            }
-            firstRun = false
-        }
-        
-        if notification.name as Notification.Name == NSNotification.Name.PDFViewPageChanged {
-
-            if loaded {
-                for i in 0...(viewPDF.document?.pageCount)! {
-                    if viewPDF.currentPage == viewPDF.document?.page(at: i) {
-                        currPage = i
-                        print("currPage" + String(i))
-                        break
-                    }
+            if loaded && firstRun {
+                
+                for _ in 0...(viewPDF.document?.pageCount)! {
+                    notes.append("")
                 }
-                typeNotes.stringValue = notes[currPage]
-                pageNum.stringValue = String(currPage+1)
+                firstRun = false
             }
-        }
-        
-        if notification.name as Notification.Name == NSNotification.Name.NSControlTextDidChange {
-            if loaded {
-                for i in 0...(viewPDF.document?.pageCount)! {
-                    if viewPDF.currentPage == viewPDF.document?.page(at: i) {
-                        currPage = i
-                        print("currPage" + String(i))
-                        break
+            
+            if notification.name as Notification.Name == NSNotification.Name.PDFViewPageChanged {
+                
+                if loaded {
+                    for i in 0...(viewPDF.document?.pageCount)! {
+                        if viewPDF.currentPage == viewPDF.document?.page(at: i) {
+                            currPage = i
+                            print("currPage" + String(i))
+                            break
+                        }
                     }
+                    typeNotes.stringValue = notes[currPage]
+                    pageNum.stringValue = String(currPage+1)
                 }
-                notes[currPage] = typeNotes.stringValue
+            }
+            
+            if notification.name as Notification.Name == NSNotification.Name.NSControlTextDidChange {
+                if loaded {
+                    for i in 0...(viewPDF.document?.pageCount)! {
+                        if viewPDF.currentPage == viewPDF.document?.page(at: i) {
+                            currPage = i
+                            print("currPage" + String(i))
+                            break
+                        }
+                    }
+                    notes[currPage] = typeNotes.stringValue
+                }
             }
         }
     }
@@ -313,35 +320,31 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @IBAction func lectureNotes(_ sender: Any) {
-        lectureNotes.isHidden = false
-        lectureNotes.isEditable = true
-        typeNotes.isHidden = true
-        lectureButton.highlight(true)
-        pageButton.highlight(false)
-//        lectureButton.setButtonType(NSPushOnPushOffButton)
-//        if pageButton.state == 1 {
-//            pageButton.setNextState()
-//        }
-        if lectureButton.isHighlighted {
-            lectureButton.isEnabled = false
-            pageButton.isEnabled = true
+        if loaded {
+            lectureNotes.isHidden = false
+            lectureNotes.isEditable = true
+            typeNotes.isHidden = true
+            lectureButton.highlight(true)
+            pageButton.highlight(false)
+            if lectureButton.isHighlighted {
+                lectureButton.isEnabled = false
+                pageButton.isEnabled = true
+            }
         }
     }
     
     
     @IBAction func pageNotes(_ sender: Any) {
-        typeNotes.isHidden = false
-        typeNotes.isEditable = true
-        lectureNotes.isHidden = true
-        pageButton.highlight(true)
-        lectureButton.highlight(false)
-//        pageButton.setButtonType(NSPushOnPushOffButton)
-//        if lectureButton.state == 2 {
-//            lectureButton.setNextState()
-//        }
-        if pageButton.isHighlighted {
-            pageButton.isEnabled = false
-            lectureButton.isEnabled = true
+        if loaded {
+            typeNotes.isHidden = false
+            typeNotes.isEditable = true
+            lectureNotes.isHidden = true
+            pageButton.highlight(true)
+            lectureButton.highlight(false)
+            if pageButton.isHighlighted {
+                pageButton.isEnabled = false
+                lectureButton.isEnabled = true
+            }
         }
     }
     
@@ -350,38 +353,47 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     
     @IBAction func FitToScreen(_ sender: Any) {
-        viewPDF.scaleFactor = CGFloat(1.0)
+        if loaded {
+            viewPDF.scaleFactor = CGFloat(1.0)
+        }
     }
     
     @IBAction func prevPage(_ sender: Any) {
-        if viewPDF.canGoToPreviousPage() {
-            indexPage -= 1
-            viewPDF.goToPreviousPage(window)
+        if loaded{
+            if viewPDF.canGoToPreviousPage() {
+                indexPage -= 1
+                viewPDF.goToPreviousPage(window)
+            }
         }
     }
     
     @IBAction func nextPage(_ sender: Any) {
-        if viewPDF.canGoToNextPage() {
-            indexPage += 1
-            viewPDF.goToNextPage(window)
+        if loaded {
+            if viewPDF.canGoToNextPage() {
+                indexPage += 1
+                viewPDF.goToNextPage(window)
+            }
         }
     }
     
     @IBAction func toPage(_ sender: Any) {
-        let onlyIntFormatter = OnlyIntegerValueFormatter()
-        toPage.formatter = onlyIntFormatter
-        let numPages = (viewPDF.document?.pageCount)!
-        if toPage.stringValue != "" {
-            let input = Int(toPage.stringValue)
-            
-            if input! <= numPages && input! > 0 {
-                viewPDF.go(to: (viewPDF.document?.page(at: input!-1))!)
-            } else {
-                //dialog box saying "page number doesnt exist"
-                let popUp = NSAlert()
-                popUp.messageText = "Invalid page number"
-                popUp.addButton(withTitle: "OK")
-                popUp.runModal()
+        if loaded {
+            let onlyIntFormatter = OnlyIntegerValueFormatter()
+            toPage.formatter = onlyIntFormatter
+            let numPages = (viewPDF.document?.pageCount)!
+            if toPage.stringValue != "" {
+                let input = Int(toPage.stringValue)
+                if (input != nil) {
+                    if input! <= numPages && input! > 0{
+                        viewPDF.go(to: (viewPDF.document?.page(at: input!-1))!)
+                    }
+                } else {
+                    //dialog box saying "page number doesnt exist"
+                    let popUp = NSAlert()
+                    popUp.messageText = "Invalid page number"
+                    popUp.addButton(withTitle: "OK")
+                    popUp.runModal()
+                }
             }
         }
     }
@@ -563,6 +575,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         countdownLabel.stringValue = timeString(time: TimeInterval(secondsCounter))
         isCounterRunning = false
         unattendedWindow.setIsVisible(false)
+        
     }
     
     func updateCountdown() {
@@ -572,6 +585,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 viewPDF.goToNextPage(window)
                 secondsCounter = unchanged
                 counterReachsEnd = unchanged
+                getCountdown.stringValue = ""
             }
         }
         if secondsCounter <= 0 {
@@ -588,6 +602,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         isCounterRunning = true
     }
+    
+    
     
 }
 
