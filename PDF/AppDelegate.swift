@@ -101,7 +101,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var getCountdown: NSTextField!
     @IBOutlet weak var openUnattended: NSButton!
     
-    
+    /*
+     Initial launch method. Organises windows and some of the global variable states.
+     - Parameter aNotification: received from NotificationCenter to execute app.
+     */
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         holdBookmark.isHidden = true
         addBookmarkOK.isEnabled = false
@@ -134,19 +137,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(typeNotesLecture(notification:)), name: NSNotification.Name.PDFViewDocumentChanged, object: nil)
                 NotificationCenter.default.addObserver(self, selector: #selector(typeNotesLecture(notification:)), name: NSNotification.Name.NSControlTextDidChange, object: lectureNotes)
         NotificationCenter.default.addObserver(self, selector: #selector(enableBookmark(_sender:)), name: NSNotification.Name.NSControlTextDidChange, object: addBookmarkName)
-        
-
-        
     }
     
-    
-    
+    /*
+     Application close method. Frees memory after closing.
+     - Parameter aNotification: received from NotificationCenter to execute app.
+     */
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
+    
+    /*
+     Function that deals with changing/opening a new PDF. Organises some of the global variable states.
+     Loads the PDF into the viewing window.
+     - Parameter sender: received from any caller.
+     */
     @IBAction func openPDF(_ sender: Any) {
-        //openPDF.layer!.backgroundColor = NSColor.white.cgColor
-        
         
         //Open the PDF file
         let file = NSOpenPanel()
@@ -159,53 +165,42 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         file.canChooseDirectories = false
         file.canCreateDirectories = true
         
-        
         if (file.runModal() == NSModalResponseOK) {
             if holdsPDF.numberOfItems > 0 {
                 holdsPDF.removeAllItems()
-                
             }
-            
             if !self.docs.contains(file.urls[0]) {
                 docs += [URL]()
                 self.docs += file.urls
             }
-            
-            
             loaded = true
-            
             toPage.stringValue = ""
-            
             // Navigation between different PDFs
             if docs.count > 1 {
                 nextPDF.isHidden = false
                 previousPDF.isHidden = false
-                //addBookmarkPanel.setIsVisible(true)
             } else {
                 nextPDF.isHidden = true
                 previousPDF.isHidden = true
             }
-            
-            print("\n\n\(docs)\n\n")
-            
             // Set combo box to display the current PDF
             for url in docs {
                     holdsPDF.addItem(withObjectValue: url.lastPathComponent)
             }
-
             holdsPDF.stringValue = docs[(docs.count-1)].lastPathComponent
             indexPDF = docs.count-1
             holdsPDF.isHidden = false
-            
             viewPDF.document = PDFDocument(url: docs[(docs.count-1)])
             pageNum.stringValue = String(1)
-            
             loadNotes()
-            
         }
-
     }
     
+    /*
+     Function that deals with changing the next listed PDF.
+     Loads the PDF into the viewing window.
+     - Parameter sender: received from UI element nextButton.
+     */
     @IBAction func nextPDF(_ sender: Any) {
         if nextPDF.isHidden == false {
             if indexPDF < docs.count - 1 {
@@ -216,6 +211,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    /*
+     Function that deals with changing the previous listed PDF.
+     Loads the PDF into the viewing window.
+     - Parameter sender: received from UI element prevButton.
+     */
     @IBAction func prevPDF(_ sender: Any) {
         if previousPDF.isHidden == false {
             if indexPDF > 0 {
@@ -223,24 +223,29 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 viewPDF.document = PDFDocument(url: docs[indexPDF])
                 holdsPDF.stringValue = docs[indexPDF].lastPathComponent
             }
-
         }
     }
     
+    /*
+     Function that deals with changing the text of current PDF.
+     Allows user to select from several of the opened PDF's.
+     - Parameter sender: received from any caller.
+     */
     @IBAction func holdsPDF(_ sender: AnyObject) {
         if loaded {
-            
-            
             indexPDF = holdsPDF.indexOfSelectedItem
             if indexPDF == -1 {
                 indexPDF=0
             }
             viewPDF.document = PDFDocument(url: docs[indexPDF])
             holdsPDF.stringValue = docs[indexPDF].lastPathComponent
-            
         }
     }
     
+    /*
+     Function that zooms in on the viewing window.
+     - Parameter sender: received from any caller.
+     */
     @IBAction func zoomIn(_ sender: Any) {
         if loaded {
             if viewPDF.canZoomIn() {
@@ -249,6 +254,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    /*
+     Function that zooms out on the viewing window.
+     - Parameter sender: received from any caller.
+     */
     @IBAction func zoomOut(_ sender: Any) {
         if loaded {
             if viewPDF.canZoomOut() {
@@ -257,37 +266,44 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-
+    /*
+     Function that deals with saving the page notes of a PDF.
+     Allows user to have persistent storage of the notes for later use.
+     - Parameter sender: received from any caller.
+     */
     @IBAction func saveNotes(_ sender: Any) {
         NSKeyedArchiver.archiveRootObject(notes, toFile: Bundle.main.resourcePath!+"/saveNotes")
     }
 
+    /*
+     Function that deals with loading saved notes of a PDF.
+     Allows user to have persistent storage of the notes.
+     */
     func loadNotes(){
         if let savedNotes = NSKeyedUnarchiver.unarchiveObject(withFile: Bundle.main.resourcePath!+"/saveNotes") as? [String] {
-            
             notes = savedNotes
         }
     }
     
+    /*
+     Function that deals with loading and saving page notes of the current PDF.
+     Allows user to have specific notes for each page of a PDF.
+    - Parameter notification: a notification for a page change, text change or doc change.
+     */
     func pageNotes(notification:NSNotification) {
-        
         if loaded {
-        
             if notes.count == 0 {
                 loadNotes()
-                
                 if notes.count == 0 {
                     for _ in 0...(viewPDF.document?.pageCount)! {
                         notes.append("")
                     }
                 }
             }
-            
             if notification.name as Notification.Name == NSNotification.Name.NSControlTextDidChange {
                 notes[Int(pageNum.stringValue)!-1] = typeNotes.stringValue
                 pageNotesDict[indexPDF] = notes
             }
-            
             if notification.name as Notification.Name == NSNotification.Name.PDFViewDocumentChanged {
                 if !(pageNotesDict[holdsPDF.indexOfSelectedItem] != nil) {
                     loadNotes()
@@ -298,16 +314,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 } else {
                     notes = pageNotesDict[holdsPDF.indexOfSelectedItem]!
                 }
-                
             }
             if notification.name as Notification.Name == NSNotification.Name.PDFViewPageChanged {
                 pageNum.stringValue = (viewPDF.currentPage?.label!)!
                 typeNotes.stringValue = notes[Int(pageNum.stringValue)!-1]
             }
         }
-        
     }
     
+    /*
+     Function that deals with loading and saving lecture notes of the current PDF.
+     Allows user to have specific notes for each PDF.
+     - Parameter notification: a notification for a text change or doc change.
+     */
     func typeNotesLecture(notification:NSNotification) {
         if loaded {
             if notification.name as Notification.Name == NSNotification.Name.NSControlTextDidChange {
@@ -315,7 +334,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     lectureNotesDict[indexPDF] = lectureNotes.stringValue
                 }
             }
-            
             if indexPDF != prevIndex {
                 if lectureNotesDict[indexPDF] == nil {
                     lectureNotes.stringValue = ""
@@ -325,43 +343,45 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     prevIndex = indexPDF
                 }
             }
-            
         }
     }
     
+    /*
+     Function that deals with loading the text box for lecture notes.
+     - Parameter sender: a notification from the lectureButton.
+     */
     @IBAction func lectureButton(_ sender: Any) {
         lectureNotes.isHidden = false
         lectureNotes.isEditable = true
         typeNotes.isHidden = true
         lectureButton.highlight(true)
         pageButton.highlight(false)
-//        lectureButton.setButtonType(NSPushOnPushOffButton)
-//        if pageButton.state == 1 {
-//            pageButton.setNextState()
-//        }
         if lectureButton.isHighlighted {
             lectureButton.isEnabled = false
             pageButton.isEnabled = true
-
         }
     }
     
+    /*
+     Function that deals with loading the text box for page notes.
+     - Parameter sender: a notification from the pageButton.
+     */
     @IBAction func pageButton(_ sender: Any) {
         typeNotes.isHidden = false
         typeNotes.isEditable = true
         lectureNotes.isHidden = true
         pageButton.highlight(true)
         lectureButton.highlight(false)
-//        pageButton.setButtonType(NSPushOnPushOffButton)
-//        if lectureButton.state == 2 {
-//            lectureButton.setNextState()
-//        }
+
         if pageButton.isHighlighted {
             pageButton.isEnabled = false
             lectureButton.isEnabled = true
         }
     }
     
+    /*
+     Function that organisies components of a help box.
+     */
     func helpPanel() {
         helpTop.stringValue = "PDF Viewer"
         helpTitle.stringValue = "Help Menu"
@@ -371,15 +391,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         helpTitle.font = NSFont.boldSystemFont(ofSize: 16.0)
         helpText.stringValue = "This is a PDF viewer designed by Ashton \n Cochrane and Tyler Baker.\n\n This is purely for the use of the assignment\n two of the COSC346 paper."
     }
-    
-    
-    
+
+    /*
+     Function that deals with returning a PDF to the default size.
+     - Parameter sender: a notification from the fitToScreen button.
+     */
     @IBAction func FitToScreen(_ sender: Any) {
         if loaded {
             viewPDF.scaleFactor = CGFloat(1.0)
         }
     }
     
+    /*
+     Function that deals with changing pages of a PDF without scrolling.
+     - Parameter sender: a notification from the prevPage button.
+     */
     @IBAction func prevPage(_ sender: Any) {
         if loaded{
             if viewPDF.canGoToPreviousPage() {
@@ -389,6 +415,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    /*
+     Function that deals with changing pages of a PDF without scrolling.
+     - Parameter sender: a notification from the nextPage button.
+     */
     @IBAction func nextPage(_ sender: Any) {
         if loaded {
             if viewPDF.canGoToNextPage() {
@@ -398,6 +428,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    /*
+     Function that allows the user to go to specific page.
+     - Parameter sender: a notification from the toPage textfield.
+     */
     @IBAction func toPage(_ sender: Any) {
         if loaded {
             let onlyIntFormatter = OnlyIntegerValueFormatter()
@@ -406,9 +440,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if toPage.stringValue != "" {
                 let input = Int(toPage.stringValue)
                 if input != nil {
-                if input! <= numPages && input! > 0  {
-                    viewPDF.go(to: (viewPDF.document?.page(at: input!-1))!)
-                }
+                    if input! <= numPages && input! > 0  {
+                        viewPDF.go(to: (viewPDF.document?.page(at: input!-1))!)
+                    }
                 } else {
                     //dialog box saying "page number doesnt exist"
                     let popUp = NSAlert()
@@ -420,14 +454,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    
+    /*
+     Function that displays a help panel.
+     - Parameter sender: a notification from the helpButton.
+     */
     @IBAction func helpButton(_ sender: NSSearchField) {
         helpWindow.setIsVisible(true)
     }
     
+    /*
+     Function that the user can find strings within a PDF document.
+     Highlights all matches while searching, individual ones while scrolling through matches.
+     - Parameter sender: a notification from the search textfield.
+     */
     @IBAction func textSearch(_ sender: Any) {
         let yellow = NSColor(red: 1, green: 1, blue: 0, alpha: 1)
-        let blue = NSColor(red: 0, green: 0, blue: 1, alpha: 1)
+        _ = NSColor(red: 0, green: 0, blue: 1, alpha: 1)
         if loaded == true {
             textSearch.sendsSearchStringImmediately = true
             let find = textSearch.stringValue
@@ -436,11 +478,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 if !vals.isEmpty {
                     searchStepper.isHidden = false;
                     vals[0].setColor(yellow)
-                    viewPDF.setCurrentSelection(vals[0] as! PDFSelection, animate: true)
+                    viewPDF.setCurrentSelection(vals[0] as? PDFSelection, animate: true)
                     viewPDF.scrollSelectionToVisible(vals[0])
                     if vals.count > 1 {
                         for i in 0...vals.count {
-                            viewPDF.setCurrentSelection(vals[i] as! PDFSelection, animate: true)
+                            viewPDF.setCurrentSelection(vals[i] as? PDFSelection, animate: true)
                             vals[i].setColor(yellow)
                         }
                     }
@@ -449,6 +491,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    /*
+     Function that the user can scroll matches to a string.
+     Skips through an array of found matches.
+     - Parameter sender: a notification from the search arrows.
+     */
     @IBAction func searchStepper(_ sender: NSStepper) {
         if loaded {
             var currVal = searchStepper.integerValue
@@ -459,27 +506,32 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 searchOutput.stringValue = "Selection \(currVal) out of \(maxSteps)"
             }
             if currVal < valsIndex && currVal >= maxSteps {
-                viewPDF.setCurrentSelection(vals[currVal] as! PDFSelection, animate: true)
+                viewPDF.setCurrentSelection(vals[currVal] as? PDFSelection, animate: true)
                 viewPDF.scrollSelectionToVisible(vals[currVal])
                 print("bottom curVal\(currVal)")
             } else if currVal > valsIndex && currVal > 0 && currVal < vals.count{
                 currVal -= 1
-                viewPDF.setCurrentSelection(vals[currVal] as! PDFSelection, animate: true)
+                viewPDF.setCurrentSelection(vals[currVal] as? PDFSelection, animate: true)
                 viewPDF.scrollSelectionToVisible(vals[currVal])
                 print(valsIndex)
             }
         }
-        
-        
     }
     
-    // BOOKMARK COMMENTING BELOW
+    /*
+     Function that brings up the creae bookmark creator pannel.
+     - Parameter sender: a notification from the bookmarkButton.
+     */
     @IBAction func addBookmark(_ sender: Any) {
         if loaded {
             addBookmarkPanel.setIsVisible(true)
         }
     }
     
+    /*
+     Function that prevents the creation of an empty bookmark.
+     - Parameter sender: a notification from the bookmarkName textbox.
+     */
     func enableBookmark(_sender: Any) {
         if addBookmarkName.stringValue != "" {
             addBookmarkOK.isEnabled = true
@@ -488,8 +540,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    /*
+     Function that responds the the creation of a bookmark and save it.
+     - Parameter sender: a notification from the bookmarkOK button.
+     */
     @IBAction func addBookmarkOK(_ sender: Any) {
-        
         bookmarkDict[addBookmarkName.stringValue] = [pageNum.stringValue, String(indexPDF)]
         holdBookmark.isHidden = false
         holdBookmark.removeAllItems()
@@ -498,10 +553,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         addBookmarkName.stringValue = ""
         addBookmarkOK.isEnabled = false
         addBookmarkPanel.close()
-        
-        
     }
 
+    /*
+     Function that responds the the cancelation of a bookmark and discards it.
+     - Parameter sender: a notification from the bookmarkCancel button.
+     */
     @IBAction func addBookmarkCancel(_ sender: Any) {
         addBookmarkName.stringValue = ""
         addBookmarkOK.isEnabled = false
@@ -509,6 +566,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
     }
 
+    /*
+     Function that stores bookmarks created by the user.
+     - Parameter sender: a notification from any call.
+     */
     @IBAction func holdBookmark(_ sender: Any) {
         let key = holdBookmark.titleOfSelectedItem!
         print(key)
@@ -520,14 +581,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         indexPDF = documentIndex!
     }
     
-    //TIMER CODE BELOW
+    /*
+    Function that sets and manages the timer feature.
+    */
     func runTimer() {
         timer = Timer.scheduledTimer(timeInterval: 1, target: self,   selector: (#selector(updateTimer)), userInfo: nil, repeats: true)
-        
         isTimerRunning = true
         pauseButton.isEnabled = true
     }
     
+    /*
+     Function that updates changes to the timer.
+     */
     func updateTimer() {
         if seconds < 0 {
             timer.invalidate()
@@ -537,6 +602,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    /*
+     Function that starts the timer.
+     - Parameter sender: a notification from startTimer.
+     */
     @IBAction func startButton(_ sender: NSButton) {
         if isTimerRunning == false {
             runTimer()
@@ -545,6 +614,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    /*
+     Function that pauses the timer.
+     - Parameter sender: a notification from the pause/resume button.
+     */
     @IBAction func pauseButton(_ sender: NSButton) {
         if resumeTapped  == false {
             timer.invalidate()
@@ -557,6 +630,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    /*
+     Function that resets the timer to zero.
+     - Parameter sender: a notification from the reset button.
+     */
     @IBAction func resetButton(_ sender: NSButton) {
         if (timer.isValid) {
             print("here \n\n\n\n")
@@ -566,7 +643,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             isTimerRunning = false
             pauseButton.isEnabled = true
             startButton.isEnabled = true
-
         } else {
             pauseButton.title = "Pause"
             seconds = 0
@@ -575,10 +651,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             pauseButton.isEnabled = true
             startButton.isEnabled = true
         }
-        
     }
     
-    // USED IN BOTH TIMER AND COUNTER
+    /*
+     Function that converts seconds to minutes and seconds to hours
+     - Parameter time: a TimeInterval to convert.
+     - Return: a String in the format hours:minutes:seconds.
+     */
     func timeString(time: TimeInterval) -> String {
         let hours = Int(time) / 3600
         let minutes = Int(time) / 60 % 60
@@ -587,13 +666,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     
-    //UNATTENDED LECTURE PAUSING CODE
+    /*
+     Function that changes the page automatically for a period of given time, set by the user.
+     - Parameter sender: a notification from the unattended button.
+     */
     @IBAction func openUnattended(_ sender: NSButton) {
         if loaded {
             unattendedWindow.setIsVisible(true)
         }
     }
     
+    /*
+     Function that sets the pages to change for a period of given time, set by the user.
+     - Parameter sender: a notification from the unattendedOK button.
+     */
     @IBAction func okayButton(_ sender: NSButton) {
         if isCounterRunning == false {
             secondsCounter = Int(getCountdown.stringValue)!
@@ -603,16 +689,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    /*
+     Function that cancels the unattended feature.
+     - Parameter sender: a notification from the unattendedCancel button.
+     */
     @IBAction func cancelButton(_ sender: NSButton) {
         counter.invalidate()
         secondsCounter = 0
         countdownLabel.stringValue = timeString(time: TimeInterval(secondsCounter))
         isCounterRunning = false
         unattendedWindow.close()
-        //unattendedWindow.setIsVisible(false)
-        
     }
     
+    /*
+     Function that changes the page automatically once unattended is set.
+     */
     func updateCountdown() {
         if counterReachsEnd == 0 {
             if viewPDF.canGoToNextPage() {
@@ -632,38 +723,34 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    /*
+     Function that sets and repeats a countdown timer for each page.
+     */
     func runCounter() {
         counter = Timer.scheduledTimer(timeInterval: 1, target: self,   selector: (#selector(updateCountdown)), userInfo: nil, repeats: true)
-        
         isCounterRunning = true
     }
-    
-    
-    
-    
 }
 
 
+/*
+ A class that is used to format the pageNumber box. This is to prevent illegal letters being entered into the field
+ */
 class OnlyIntegerValueFormatter: NumberFormatter {
     
+    /*
+     Override function that returns nil if the input was not a number.
+     - Parameter partialString: a String to validate.
+     - Parameter newString: optional UnsafeMutablePointer.
+     - Parameter error: an AutoreleasingUnsafeMutablePointer.
+     - Return: a boolean value validating the partial string is/is not a number.
+     */
     override func isPartialStringValid(_ partialString: String, newEditingString newString: AutoreleasingUnsafeMutablePointer<NSString?>?, errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>?) -> Bool {
-        
         // Ability to reset your field (otherwise you can't delete the content)
         // You can check if the field is empty later
         if partialString.isEmpty {
             return true
         }
-        
-        // Optional: limit input length
-        /*
-         if partialString.characters.count>3 {
-         return false
-         }
-         */
-        
-        // Actual check
         return Int(partialString) != nil
     }
 }
-
-
