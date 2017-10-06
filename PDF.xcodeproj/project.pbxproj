@@ -495,6 +495,7 @@
 				A390BECC1F70AF9600C62FC2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A390BECD1F70AF9600C62FC2 /* Build configuration list for PBXNativeTarget "PDFTests" */ = {
 			isa = XCConfigurationList;
@@ -503,6 +504,7 @@
 				A390BECF1F70AF9600C62FC2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A390BED01F70AF9600C62FC2 /* Build configuration list for PBXNativeTarget "PDFUITests" */ = {
 			isa = XCConfigurationList;
@@ -511,6 +513,7 @@
 				A390BED21F70AF9600C62FC2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
