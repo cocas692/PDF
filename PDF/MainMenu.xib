@@ -681,7 +681,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="131" y="165" width="825" height="634"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
             <value key="minSize" type="size" width="825" height="599"/>
             <view key="contentView" id="uAB-qk-Upk">
                 <rect key="frame" x="0.0" y="0.0" width="825" height="634"/>
@@ -893,7 +893,7 @@
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="lectureNotes:" target="By2-83-JeL" id="YGj-Ji-gEB"/>
+                            <action selector="lectureButton:" target="By2-83-JeL" id="bD7-Ao-5mo"/>
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vju-eb-dfZ">
@@ -904,7 +904,7 @@
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="pageNotes:" target="By2-83-JeL" id="pNS-0I-f5Q"/>
+                            <action selector="pageButton:" target="By2-83-JeL" id="9oO-mt-yNp"/>
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f7k-UV-sgY">
@@ -990,6 +990,17 @@
                             <action selector="openUnattended:" target="By2-83-JeL" id="vum-uc-6wP"/>
                         </connections>
                     </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RtV-J6-Npe">
+                        <rect key="frame" x="159" y="573" width="100" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Save Pages" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="NSx-lV-hcg">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="saveNotes:" target="By2-83-JeL" id="rhp-xa-eTQ"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
             <toolbar key="toolbar" implicitIdentifier="9F81C034-85A2-4249-8A5F-0A85B309B3AD" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="33a-iP-bpa">
@@ -1067,7 +1078,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="798" y="303" width="360" height="448"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
             <value key="minSize" type="size" width="360" height="448"/>
             <value key="maxSize" type="size" width="360" height="448"/>
             <view key="contentView" id="S96-dG-ec1">
@@ -1114,7 +1125,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="755" y="432" width="386" height="177"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
             <view key="contentView" id="m8o-Oa-bA4">
                 <rect key="frame" x="0.0" y="0.0" width="386" height="177"/>
                 <autoresizingMask key="autoresizingMask"/>

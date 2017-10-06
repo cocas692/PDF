@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		547A0E531F86E13A00D56033 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 547A0E521F86E13A00D56033 /* Credits.rtf */; };
 		A390BEA91F70AF9600C62FC2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A390BEA81F70AF9600C62FC2 /* AppDelegate.swift */; };
 		A390BEAD1F70AF9600C62FC2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A390BEAC1F70AF9600C62FC2 /* Assets.xcassets */; };
 		A390BEBB1F70AF9600C62FC2 /* PDFTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A390BEBA1F70AF9600C62FC2 /* PDFTests.swift */; };
@@ -33,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		547A0E521F86E13A00D56033 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		A390BEA51F70AF9600C62FC2 /* PDF.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PDF.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A390BEA81F70AF9600C62FC2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A390BEAC1F70AF9600C62FC2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 				A390BEAC1F70AF9600C62FC2 /* Assets.xcassets */,
 				A390BEB11F70AF9600C62FC2 /* Info.plist */,
 				A390BED31F70B17C00C62FC2 /* MainMenu.xib */,
+				547A0E521F86E13A00D56033 /* Credits.rtf */,
 			);
 			path = PDF;
 			sourceTree = "<group>";
@@ -239,6 +242,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A390BEAD1F70AF9600C62FC2 /* Assets.xcassets in Resources */,
+				547A0E531F86E13A00D56033 /* Credits.rtf in Resources */,
 				A390BED41F70B17C00C62FC2 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -495,6 +499,7 @@
 				A390BECC1F70AF9600C62FC2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A390BECD1F70AF9600C62FC2 /* Build configuration list for PBXNativeTarget "PDFTests" */ = {
 			isa = XCConfigurationList;
@@ -503,6 +508,7 @@
 				A390BECF1F70AF9600C62FC2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A390BED01F70AF9600C62FC2 /* Build configuration list for PBXNativeTarget "PDFUITests" */ = {
 			isa = XCConfigurationList;
@@ -511,6 +517,7 @@
 				A390BED21F70AF9600C62FC2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

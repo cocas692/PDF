@@ -119,8 +119,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         helpTitle.font = NSFont.boldSystemFont(ofSize: 16.0)
         helpText.stringValue = "This is a PDF viewer designed by Ashton \n Cochrane and Tyler Baker.\n\n This is purely for the use of the assignment\n two of the COSC346 paper."
         NotificationCenter.default.addObserver(self, selector: #selector(getter: openPDF), name: NSNotification.Name.PDFViewDocumentChanged, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(typeNotes(notification:)), name: NSNotification.Name.PDFViewPageChanged, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(typeNotes(notification:)), name: NSNotification.Name.NSControlTextDidChange, object: typeNotes)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(pageNotes(notification:)), name: NSNotification.Name.PDFViewPageChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(pageNotes(notification:)), name: NSNotification.Name.NSControlTextDidChange, object: typeNotes)
+        NotificationCenter.default.addObserver(self, selector: #selector(pageNotes(notification:)), name: NSNotification.Name.PDFViewDocumentChanged, object: nil)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(typeNotesLecture(notification:)), name: NSNotification.Name.PDFViewDocumentChanged, object: nil)
                 NotificationCenter.default.addObserver(self, selector: #selector(typeNotesLecture(notification:)), name: NSNotification.Name.NSControlTextDidChange, object: lectureNotes)
         NotificationCenter.default.addObserver(self, selector: #selector(enableBookmark(_sender:)), name: NSNotification.Name.NSControlTextDidChange, object: addBookmarkName)
@@ -180,11 +183,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 holdsPDF.addItem(withObjectValue: url.lastPathComponent)
             }
             holdsPDF.stringValue = docs[(docs.count-1)].lastPathComponent
+            indexPDF = docs.count-1
             holdsPDF.isHidden = false
             
             viewPDF.document = PDFDocument(url: docs[(docs.count-1)])
             pageNum.stringValue = String(1)
             
+            loadNotes()
             
         }
 
@@ -236,45 +241,54 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    
-    func typeNotes(notification:NSNotification) {
-        var currPage:Int = 0
-        
-        if loaded && firstRun {
-            
-            for _ in 0...(viewPDF.document?.pageCount)! {
-                notes.append("")
-            }
-            firstRun = false
-        }
-        
-        if notification.name as Notification.Name == NSNotification.Name.PDFViewPageChanged {
+    @IBAction func saveNotes(_ sender: Any) {
+        NSKeyedArchiver.archiveRootObject(notes, toFile: Bundle.main.resourcePath!+"/saveNotes")
+    }
 
-            if loaded {
-                for i in 0...(viewPDF.document?.pageCount)! {
-                    if viewPDF.currentPage == viewPDF.document?.page(at: i) {
-                        currPage = i
-                        print("currPage" + String(i))
-                        break
+    func loadNotes(){
+        if let savedNotes = NSKeyedUnarchiver.unarchiveObject(withFile: Bundle.main.resourcePath!+"/saveNotes") as? [String] {
+            
+            notes = savedNotes
+        }
+    }
+    
+    func pageNotes(notification:NSNotification) {
+        
+        if loaded {
+        
+            if notes.count == 0 {
+                loadNotes()
+                
+                if notes.count == 0 {
+                    for _ in 0...(viewPDF.document?.pageCount)! {
+                        notes.append("")
                     }
                 }
-                typeNotes.stringValue = notes[currPage]
-                pageNum.stringValue = String(currPage+1)
+            }
+            
+            if notification.name as Notification.Name == NSNotification.Name.NSControlTextDidChange {
+                notes[Int(pageNum.stringValue)!-1] = typeNotes.stringValue
+                pageNotesDict[indexPDF] = notes
+            }
+            
+            if notification.name as Notification.Name == NSNotification.Name.PDFViewDocumentChanged {
+                if !(pageNotesDict[holdsPDF.indexOfSelectedItem] != nil) {
+                    loadNotes()
+                }
+                if !(pageNotesDict[holdsPDF.indexOfSelectedItem] != nil) {
+                    notes.removeAll()
+                    typeNotes.stringValue = ""
+                } else {
+                    notes = pageNotesDict[holdsPDF.indexOfSelectedItem]!
+                }
+                
+            }
+            if notification.name as Notification.Name == NSNotification.Name.PDFViewPageChanged {
+                pageNum.stringValue = (viewPDF.currentPage?.label!)!
+                typeNotes.stringValue = notes[Int(pageNum.stringValue)!-1]
             }
         }
         
-        if notification.name as Notification.Name == NSNotification.Name.NSControlTextDidChange {
-            if loaded {
-                for i in 0...(viewPDF.document?.pageCount)! {
-                    if viewPDF.currentPage == viewPDF.document?.page(at: i) {
-                        currPage = i
-                        print("currPage" + String(i))
-                        break
-                    }
-                }
-                notes[currPage] = typeNotes.stringValue
-            }
-        }
     }
     
     func typeNotesLecture(notification:NSNotification) {
@@ -283,19 +297,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if notification.name as Notification.Name == NSNotification.Name.NSControlTextDidChange {
                 if indexPDF == prevIndex {
                     lectureNotesDict[indexPDF] = lectureNotes.stringValue
-                }
-            }
-            if indexPDF != prevIndex {
-                pageNotesDict[prevIndex] = notes
-                
-                if pageNotesDict[indexPDF] != nil {
-                    notes = pageNotesDict[indexPDF]!
-                    typeNotes.stringValue = notes[0]
-                } else {
-                    notes.removeAll()
-                    for _ in 0...(viewPDF.document?.pageCount)! {
-                        notes.append("")
-                    }
                 }
             }
             
@@ -312,7 +313,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    @IBAction func lectureNotes(_ sender: Any) {
+    @IBAction func lectureButton(_ sender: Any) {
         lectureNotes.isHidden = false
         lectureNotes.isEditable = true
         typeNotes.isHidden = true
@@ -329,7 +330,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     
-    @IBAction func pageNotes(_ sender: Any) {
+    @IBAction func pageButton(_ sender: Any) {
         typeNotes.isHidden = false
         typeNotes.isEditable = true
         lectureNotes.isHidden = true
@@ -368,20 +369,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @IBAction func toPage(_ sender: Any) {
-        let onlyIntFormatter = OnlyIntegerValueFormatter()
-        toPage.formatter = onlyIntFormatter
-        let numPages = (viewPDF.document?.pageCount)!
-        if toPage.stringValue != "" {
-            let input = Int(toPage.stringValue)
-            
-            if input! <= numPages && input! > 0 {
-                viewPDF.go(to: (viewPDF.document?.page(at: input!-1))!)
-            } else {
-                //dialog box saying "page number doesnt exist"
-                let popUp = NSAlert()
-                popUp.messageText = "Invalid page number"
-                popUp.addButton(withTitle: "OK")
-                popUp.runModal()
+        if loaded {
+            let onlyIntFormatter = OnlyIntegerValueFormatter()
+            toPage.formatter = onlyIntFormatter
+            let numPages = (viewPDF.document?.pageCount)!
+            if toPage.stringValue != "" {
+                let input = Int(toPage.stringValue)
+                
+                if input! <= numPages && input! > 0 {
+                    viewPDF.go(to: (viewPDF.document?.page(at: input!-1))!)
+                } else {
+                    //dialog box saying "page number doesnt exist"
+                    let popUp = NSAlert()
+                    popUp.messageText = "Invalid page number"
+                    popUp.addButton(withTitle: "OK")
+                    popUp.runModal()
+                }
             }
         }
     }
