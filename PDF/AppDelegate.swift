@@ -12,61 +12,64 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
+    //Variables for loading and keeping track of PDFs
     var docs = [URL]()
     var loaded = false
+    var firstRun = true
     var indexPDF = 0;
-    var notes: [String] = []
+    var indexPage = 0
+    
+    //Variables for bookmarks
     var bookmarks = [String]()
     var bookmarkDict = [String:[String]]()
-    var indexPage = 0
-    var firstRun = true
-    var valsCount = 0
-    var valsIndex = 0
-    var first = true
+    
+    //Variables for the notes
     var lectureNotesDict = [Int:String]()
     var pageNotesDict = [Int:[String]]()
+    var notes: [String] = []
     var prevIndex = 0;
     
-    //timer
+    //Variables for the timer
     var seconds = 0
     var timer = Timer()
     var isTimerRunning = false
     var resumeTapped = false
     
-    //Counter
+    //Variables for the counter
     var unchanged = 60
     var counterReachsEnd = 60
     var secondsCounter = 60
     var counter = Timer()
     var isCounterRunning = false
     
+    //Variables for the date
     var date = Date()
     let dateFormatter = DateFormatter()
 
-    
+    //Variables for searching the PDF
     var vals = [AnyObject]()
-    var snum = 0;
+    var valsIndex = 0
     
-    
+    //Outlets for opening and changing PDFs
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var viewPDF: PDFView!
     @IBOutlet weak var holdsPDF: NSComboBox!
     @IBOutlet weak var nextPDF: NSButton!
     @IBOutlet weak var previousPDF: NSButton!
     @IBOutlet weak var openPDF: NSButton!
-    @IBOutlet weak var minusZoom: NSButton!
-    @IBOutlet weak var nextPage: NSButton!
-    @IBOutlet weak var toPage: NSTextField!
-    @IBOutlet weak var typeNotes: NSTextField!
-    @IBOutlet weak var zoomIn: NSButton!
-    @IBOutlet weak var zoomOut: NSButton!
-    @IBOutlet weak var textSearch: NSSearchField!
+    
+    //Outlets for the help Panel
     @IBOutlet weak var helpWindow: NSPanel!
     @IBOutlet weak var helpTitle: NSTextField!
     @IBOutlet weak var helpText: NSTextField!
     @IBOutlet weak var helpTop: NSTextField!
-    @IBOutlet weak var pageNum: NSTextField!
     
+    //Outlets for changing PDF pages
+    @IBOutlet weak var pageNum: NSTextField!
+    @IBOutlet weak var nextPage: NSButton!
+    @IBOutlet weak var toPage: NSTextField!
+    
+    //Outlets for bookmarks
     @IBOutlet weak var addBookmark: NSToolbarItem!
     @IBOutlet weak var addBookmarkPanel: NSPanel!
     @IBOutlet weak var addBookmarkName: NSTextField!
@@ -74,31 +77,39 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var addBookmarkCancel: NSButton!
     @IBOutlet weak var addBookmarkDesc: NSTextField!
     @IBOutlet weak var holdBookmark: NSPopUpButton!
+    
+    //Outlets for searchbar and stepper
+    @IBOutlet weak var textSearch: NSSearchField!
     @IBOutlet weak var searchStepper: NSStepper!
     @IBOutlet weak var searchOutput: NSTextField!
     @IBOutlet weak var lectureNotes: NSTextField!
     
+    //Outlets for notes
+    @IBOutlet weak var typeNotes: NSTextField!
     @IBOutlet weak var pageButton: NSButton!
     @IBOutlet weak var lectureButton: NSButton!
     
+    //Outlets for the clock
     @IBOutlet weak var clockLabel: NSTextField!
     @IBOutlet weak var timerLabel: NSTextField!
     @IBOutlet weak var pauseButton: NSButton!
     @IBOutlet weak var startButton: NSButton!
     
-    //UNATTENDED MODE CODE
+    //Outlets for unattended mode
     @IBOutlet weak var countdownLabel: NSTextField!
     @IBOutlet weak var unattendedWindow: NSPanel!
     @IBOutlet weak var getCountdown: NSTextField!
     @IBOutlet weak var openUnattended: NSButton!
     
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         holdBookmark.isHidden = true
         addBookmarkOK.isEnabled = false
+        
         typeNotes.isEditable = false
+        typeNotes.isHidden = true
         lectureNotes.isEditable = false
         lectureNotes.isHidden = true
-        typeNotes.isHidden = true
         
         unattendedWindow.setIsVisible(false)
         
@@ -111,13 +122,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         countdownLabel.font = NSFont(name: (timerLabel.font?.fontName)!, size: CGFloat(18.0))
         timerLabel.font = NSFont(name: (timerLabel.font?.fontName)!, size: CGFloat(18.0))
         
-        helpTop.stringValue = "PDF Viewer"
-        helpTitle.stringValue = "Help Menu"
-        helpTop.font = NSFont(name: (helpTop.font?.fontName)!, size: CGFloat(20.0))
-        helpTop.font = NSFont.boldSystemFont(ofSize: 20.0)
-        helpTitle.font = NSFont(name: (helpTitle.font?.fontName)!, size: CGFloat(20.0))
-        helpTitle.font = NSFont.boldSystemFont(ofSize: 16.0)
-        helpText.stringValue = "This is a PDF viewer designed by Ashton \n Cochrane and Tyler Baker.\n\n This is purely for the use of the assignment\n two of the COSC346 paper."
+        helpPanel()
+        
+        //Checking for notifications sent
         NotificationCenter.default.addObserver(self, selector: #selector(getter: openPDF), name: NSNotification.Name.PDFViewDocumentChanged, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(pageNotes(notification:)), name: NSNotification.Name.PDFViewPageChanged, object: nil)
@@ -141,7 +148,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         //openPDF.layer!.backgroundColor = NSColor.white.cgColor
         
         
-        
+        //Open the PDF file
         let file = NSOpenPanel()
         file.title = "Select PDF file"
         file.allowedFileTypes = ["pdf"]
@@ -151,6 +158,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         file.canChooseFiles = true
         file.canChooseDirectories = false
         file.canCreateDirectories = true
+        
         
         if (file.runModal() == NSModalResponseOK) {
             if holdsPDF.numberOfItems > 0 {
@@ -178,10 +186,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 previousPDF.isHidden = true
             }
             
+            print("\n\n\(docs)\n\n")
+            
             // Set combo box to display the current PDF
             for url in docs {
-                holdsPDF.addItem(withObjectValue: url.lastPathComponent)
+                    holdsPDF.addItem(withObjectValue: url.lastPathComponent)
             }
+
             holdsPDF.stringValue = docs[(docs.count-1)].lastPathComponent
             indexPDF = docs.count-1
             holdsPDF.isHidden = false
@@ -218,7 +229,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBAction func holdsPDF(_ sender: AnyObject) {
         if loaded {
-            //indexPDF = docs.index(of: (viewPDF.document?.documentURL)!)!        //-1 error crashes page jump
+            
+            
             indexPDF = holdsPDF.indexOfSelectedItem
             if indexPDF == -1 {
                 indexPDF=0
@@ -230,17 +242,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @IBAction func zoomIn(_ sender: Any) {
-        if viewPDF.canZoomIn() {
-            viewPDF.zoomIn(0.5)
+        if loaded {
+            if viewPDF.canZoomIn() {
+                viewPDF.zoomIn(0.5)
+            }
         }
     }
     
     @IBAction func zoomOut(_ sender: Any) {
-        if viewPDF.canZoomOut() {
-            viewPDF.zoomOut(0.5)
+        if loaded {
+            if viewPDF.canZoomOut() {
+                viewPDF.zoomOut(0.5)
+            }
         }
     }
     
+
     @IBAction func saveNotes(_ sender: Any) {
         NSKeyedArchiver.archiveRootObject(notes, toFile: Bundle.main.resourcePath!+"/saveNotes")
     }
@@ -293,7 +310,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func typeNotesLecture(notification:NSNotification) {
         if loaded {
-            
             if notification.name as Notification.Name == NSNotification.Name.NSControlTextDidChange {
                 if indexPDF == prevIndex {
                     lectureNotesDict[indexPDF] = lectureNotes.stringValue
@@ -309,7 +325,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     prevIndex = indexPDF
                 }
             }
-
+            
         }
     }
     
@@ -326,9 +342,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if lectureButton.isHighlighted {
             lectureButton.isEnabled = false
             pageButton.isEnabled = true
+
         }
     }
-    
     
     @IBAction func pageButton(_ sender: Any) {
         typeNotes.isHidden = false
@@ -346,25 +362,39 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    
+    func helpPanel() {
+        helpTop.stringValue = "PDF Viewer"
+        helpTitle.stringValue = "Help Menu"
+        helpTop.font = NSFont(name: (helpTop.font?.fontName)!, size: CGFloat(20.0))
+        helpTop.font = NSFont.boldSystemFont(ofSize: 20.0)
+        helpTitle.font = NSFont(name: (helpTitle.font?.fontName)!, size: CGFloat(20.0))
+        helpTitle.font = NSFont.boldSystemFont(ofSize: 16.0)
+        helpText.stringValue = "This is a PDF viewer designed by Ashton \n Cochrane and Tyler Baker.\n\n This is purely for the use of the assignment\n two of the COSC346 paper."
+    }
     
     
     
     @IBAction func FitToScreen(_ sender: Any) {
-        viewPDF.scaleFactor = CGFloat(1.0)
+        if loaded {
+            viewPDF.scaleFactor = CGFloat(1.0)
+        }
     }
     
     @IBAction func prevPage(_ sender: Any) {
-        if viewPDF.canGoToPreviousPage() {
-            indexPage -= 1
-            viewPDF.goToPreviousPage(window)
+        if loaded{
+            if viewPDF.canGoToPreviousPage() {
+                indexPage -= 1
+                viewPDF.goToPreviousPage(window)
+            }
         }
     }
     
     @IBAction func nextPage(_ sender: Any) {
-        if viewPDF.canGoToNextPage() {
-            indexPage += 1
-            viewPDF.goToNextPage(window)
+        if loaded {
+            if viewPDF.canGoToNextPage() {
+                indexPage += 1
+                viewPDF.goToNextPage(window)
+            }
         }
     }
     
@@ -375,9 +405,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             let numPages = (viewPDF.document?.pageCount)!
             if toPage.stringValue != "" {
                 let input = Int(toPage.stringValue)
-                
-                if input! <= numPages && input! > 0 {
+                if input != nil {
+                if input! <= numPages && input! > 0  {
                     viewPDF.go(to: (viewPDF.document?.page(at: input!-1))!)
+                }
                 } else {
                     //dialog box saying "page number doesnt exist"
                     let popUp = NSAlert()
@@ -404,7 +435,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 vals = (viewPDF.document?.findString(find, withOptions: 1))!
                 if !vals.isEmpty {
                     searchStepper.isHidden = false;
-                    valsCount = vals.count - 1
                     vals[0].setColor(yellow)
                     viewPDF.setCurrentSelection(vals[0] as! PDFSelection, animate: true)
                     viewPDF.scrollSelectionToVisible(vals[0])
@@ -443,6 +473,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
     }
     
+    // BOOKMARK COMMENTING BELOW
     @IBAction func addBookmark(_ sender: Any) {
         if loaded {
             addBookmarkPanel.setIsVisible(true)
@@ -465,7 +496,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         holdBookmark.addItems(withTitles: Array(bookmarkDict.keys))
         bookmarks.append(addBookmarkName.stringValue)
         addBookmarkName.stringValue = ""
-        addBookmarkDesc.stringValue = ""
         addBookmarkOK.isEnabled = false
         addBookmarkPanel.close()
         
@@ -474,7 +504,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBAction func addBookmarkCancel(_ sender: Any) {
         addBookmarkName.stringValue = ""
-        addBookmarkDesc.stringValue = ""
         addBookmarkOK.isEnabled = false
         addBookmarkPanel.close()
         
@@ -484,12 +513,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let key = holdBookmark.titleOfSelectedItem!
         print(key)
         let bookmark = bookmarkDict[key]
+        let documentIndex = Int(bookmark![1])
         let page = bookmark![0]
-        
+        viewPDF.document = PDFDocument(url: docs[documentIndex!])
         viewPDF.go(to: (viewPDF.document?.page(at: (Int(page)!)-1))!)
-        
+        indexPDF = documentIndex!
     }
     
+    //TIMER CODE BELOW
     func runTimer() {
         timer = Timer.scheduledTimer(timeInterval: 1, target: self,   selector: (#selector(updateTimer)), userInfo: nil, repeats: true)
         
@@ -505,18 +536,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             timerLabel.stringValue = timeString(time: TimeInterval(seconds))
         }
     }
-    
-    func timeString(time: TimeInterval) -> String {
-        let hours = Int(time) / 3600
-        let minutes = Int(time) / 60 % 60
-        let seconds = Int(time) % 60
-        return String(format: "%02i:%02i:%02i",hours, minutes, seconds)
-    }
 
     @IBAction func startButton(_ sender: NSButton) {
         if isTimerRunning == false {
             runTimer()
             startButton.isEnabled = false
+            resumeTapped = false
         }
     }
     
@@ -533,15 +558,33 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @IBAction func resetButton(_ sender: NSButton) {
-        timer.invalidate()
-        seconds = 0
-        timerLabel.stringValue = timeString(time: TimeInterval(seconds))
-        isTimerRunning = false
-        pauseButton.isEnabled = true
-        startButton.isEnabled = true
-        pauseButton.title = "Pause"
+        if (timer.isValid) {
+            print("here \n\n\n\n")
+            timer.invalidate()
+            seconds = 0
+            timerLabel.stringValue = timeString(time: TimeInterval(seconds))
+            isTimerRunning = false
+            pauseButton.isEnabled = true
+            startButton.isEnabled = true
+
+        } else {
+            pauseButton.title = "Pause"
+            seconds = 0
+            timerLabel.stringValue = timeString(time: TimeInterval(seconds))
+            isTimerRunning = false
+            pauseButton.isEnabled = true
+            startButton.isEnabled = true
+        }
+        
     }
     
+    // USED IN BOTH TIMER AND COUNTER
+    func timeString(time: TimeInterval) -> String {
+        let hours = Int(time) / 3600
+        let minutes = Int(time) / 60 % 60
+        let seconds = Int(time) % 60
+        return String(format: "%02i:%02i:%02i",hours, minutes, seconds)
+    }
     
     
     //UNATTENDED LECTURE PAUSING CODE
@@ -565,7 +608,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         secondsCounter = 0
         countdownLabel.stringValue = timeString(time: TimeInterval(secondsCounter))
         isCounterRunning = false
-        unattendedWindow.setIsVisible(false)
+        unattendedWindow.close()
+        //unattendedWindow.setIsVisible(false)
+        
     }
     
     func updateCountdown() {
@@ -575,6 +620,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 viewPDF.goToNextPage(window)
                 secondsCounter = unchanged
                 counterReachsEnd = unchanged
+                getCountdown.stringValue = ""
             }
         }
         if secondsCounter <= 0 {
@@ -591,6 +637,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         isCounterRunning = true
     }
+    
+    
+    
     
 }
 
