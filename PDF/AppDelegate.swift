@@ -248,7 +248,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
      */
     @IBAction func zoomIn(_ sender: Any) {
         if loaded {
-            if viewPDF.canZoomIn() {
+            if viewPDF.canZoomIn {
                 viewPDF.zoomIn(0.5)
             }
         }
@@ -260,7 +260,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
      */
     @IBAction func zoomOut(_ sender: Any) {
         if loaded {
-            if viewPDF.canZoomOut() {
+            if viewPDF.canZoomOut {
                 viewPDF.zoomOut(0.5)
             }
         }
@@ -408,7 +408,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
      */
     @IBAction func prevPage(_ sender: Any) {
         if loaded{
-            if viewPDF.canGoToPreviousPage() {
+            if viewPDF.canGoToPreviousPage {
                 indexPage -= 1
                 viewPDF.goToPreviousPage(window)
             }
@@ -421,7 +421,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
      */
     @IBAction func nextPage(_ sender: Any) {
         if loaded {
-            if viewPDF.canGoToNextPage() {
+            if viewPDF.canGoToNextPage {
                 indexPage += 1
                 viewPDF.goToNextPage(window)
             }
@@ -474,7 +474,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             textSearch.sendsSearchStringImmediately = true
             let find = textSearch.stringValue
             if find != "" {
-                vals = (viewPDF.document?.findString(find, withOptions: 1))!
+                vals = (viewPDF.document?.findString(find, with: NSString.CompareOptions(rawValue: 1)))!
                 if !vals.isEmpty {
                     searchStepper.isHidden = false;
                     vals[0].setColor(yellow)
@@ -706,7 +706,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
      */
     func updateCountdown() {
         if counterReachsEnd == 0 {
-            if viewPDF.canGoToNextPage() {
+            if viewPDF.canGoToNextPage {
                 indexPage += 1
                 viewPDF.goToNextPage(window)
                 secondsCounter = unchanged
